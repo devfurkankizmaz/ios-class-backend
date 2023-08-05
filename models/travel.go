@@ -23,6 +23,7 @@ type TravelInput struct {
 }
 
 type TravelResponse struct {
+	ID          *uuid.UUID `json:"id"`
 	VisitDate   *time.Time `json:"visit_date"`
 	Location    string     `json:"location"`
 	Information string     `json:"information"`

@@ -59,6 +59,7 @@ func (ah *AddressHandler) FetchAllByUserID(c echo.Context) error {
 
 	for k, v := range addresses {
 		response[k] = models.AddressResponse{
+			ID:           v.ID,
 			AddressTitle: v.AddressTitle,
 			State:        v.State,
 			City:         v.City,
@@ -82,6 +83,7 @@ func (ah *AddressHandler) FetchByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
 	response := models.AddressResponse{
+		ID:           address.ID,
 		AddressTitle: address.AddressTitle,
 		State:        address.State,
 		City:         address.City,

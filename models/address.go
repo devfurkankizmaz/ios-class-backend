@@ -26,6 +26,7 @@ type AddressInput struct {
 }
 
 type AddressResponse struct {
+	ID           *uuid.UUID `json:"id"`
 	AddressTitle string     `json:"address_title"`
 	State        string     `json:"state"`
 	City         string     `json:"city"`

@@ -67,6 +67,7 @@ func (th *TravelHandler) FetchAllByUserID(c echo.Context) error {
 
 	for k, v := range travels {
 		response[k] = models.TravelResponse{
+			ID:          v.ID,
 			VisitDate:   v.VisitDate,
 			Location:    v.Location,
 			Information: v.Information,
@@ -88,6 +89,7 @@ func (th *TravelHandler) FetchByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
 	response := models.TravelResponse{
+		ID:          travel.ID,
 		VisitDate:   travel.VisitDate,
 		Location:    travel.Location,
 		Information: travel.Information,
