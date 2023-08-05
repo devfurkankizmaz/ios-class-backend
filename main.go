@@ -18,6 +18,7 @@ func main() {
 	server.Use(middleware.Logger())
 	server.Use(middleware.Recover())
 	server.Use(middleware.CORS())
+	server.Use(middleware.Static("/docs"))
 	app := configs.App()
 	routes.Setup(app.DB, server)
 

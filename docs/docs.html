@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sa</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="api-documentation">API Documentation</h1>
+<p>Welcome to the API documentation for our service. This API allows you to manage addresses and travel information, as well as user authentication.</p>
+<h2 id="public-routes">Public Routes</h2>
+<h3 id="register-user">Register User</h3>
+<p>Register a new user.
+<strong>Endpoint:</strong> <code>POST /v1/auth/register</code></p>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  "full_name": "John Doe",
+  "email": "johndoe@example.com",
+  "password": "secretpassword"
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "message": "Inserted ID: d00e6165-8453-4e69-b07d-82a87cfb51fa",
+  "status": "success"
+}
+</code></pre>
+<h3 id="refresh-token">Refresh Token</h3>
+<p>Refresh user access token.
+<strong>Endpoint:</strong> <code>POST /v1/auth/refresh</code></p>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  "refresh_token": "refresh_token_here"
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "accessToken": "new_access_token",
+  "refreshToken": "new_refresh_token"
+}
+</code></pre>
+<h3 id="user-login">User Login</h3>
+<p>Authenticate and login user.
+<strong>Endpoint:</strong> <code>POST /v1/auth/login</code></p>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  "email": "johndoe@example.com",
+  "password": "secretpassword"
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "accessToken": "access_token",
+  "refreshToken": "refresh_token"
+}
+</code></pre>
+<h2 id="protected-routes">Protected Routes</h2>
+<p>Note: For protected routes, include the Authorization header with the value Bearer .</p>
+<h3 id="get-user-profile">Get User Profile</h3>
+<p>Get user's profile information.
+<strong>Endpoint:</strong> <code>GET /v1/me</code></p>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "id": "user_id",
+  "full_name": "John Doe",
+  "email": "johndoe@example.com",
+  "role": "user_role",
+  "created_at": "2023-08-05T12:34:56Z",
+  "updated_at": "2023-08-05T12:34:56Z"
+}
+</code></pre>
+<h3 id="create-a-travel">Create a Travel</h3>
+<p>Create a new travel entry.
+<strong>Endpoint:</strong> <code>POST /v1/travels</code></p>
+<p><strong>Request:</strong></p>
+<pre><code class="language-json">{
+  "visit_date": "2023-08-10T00:00:00Z",
+  "location": "Destination City",
+  "information": "Travel details here"
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "visit_date": "2023-08-10T00:00:00Z",
+  "location": "Destination City",
+  "information": "Travel details here",
+  "created_at": "2023-08-05T12:34:56Z",
+  "updated_at": "2023-08-05T12:34:56Z"
+}
+</code></pre>
+<h3 id="list-travels">List Travels</h3>
+<p>Get a list of travel entries.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/travels?page=1&amp;limit=10</code></p>
+<h3 id="get-travel-by-id">Get Travel by ID</h3>
+<p>Get details of a specific travel entry.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/travels/$(travelId)</code></p>
+<h3 id="update-travel">Update Travel</h3>
+<p>Update details of a specific travel entry.</p>
+<p><strong>Endpoint:</strong> <code>PUT /v1/travels/$(travelId)</code></p>
+<h3 id="delete-travel">Delete Travel</h3>
+<p>Delete a specific travel entry.</p>
+<p><strong>Endpoint:</strong> <code>DELETE /v1/travels/$(travelId)</code></p>
+<h2 id="address">Address</h2>
+<p>Perform operations related to addresses.</p>
+<h3 id="create-address">Create Address</h3>
+<p>Create a new address entry.</p>
+<p><strong>Endpoint:</strong> <code>POST /v1/addresses</code>
+<strong>Request:</strong></p>
+<pre><code class="language-json">{
+  "address_title": "Home",
+  "state": "State",
+  "city": "City",
+  "country": "Country",
+  "address": "Address"
+}
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre><code class="language-json">{
+  "address_title": "Home",
+  "state": "State",
+  "city": "City",
+  "country": "Country",
+  "address": "Address",
+  "created_at": "2023-08-05T12:34:56Z",
+  "updated_at": "2023-08-05T12:34:56Z"
+}
+</code></pre>
+<h3 id="list-addresses">List Addresses</h3>
+<p>Get a list of address entries.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/addresses</code></p>
+<h3 id="get-address-by-id">Get Address by ID</h3>
+<p>Get details of a specific address entry.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/addresses/$(addressId)</code></p>
+<h3 id="update-address">Update Address</h3>
+<p>Update details of a specific address entry.</p>
+<p><strong>Endpoint:</strong> <code>PUT /v1/addresses/$(addressId)</code></p>
+<h3 id="delete-address">Delete Address</h3>
+<p>Delete a specific address entry.</p>
+<p><strong>Endpoint:</strong> <code>DELETE /v1/addresses/$(addressId)</code></p>
+</div>
+</body>
+
+</html>
