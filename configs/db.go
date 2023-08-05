@@ -1,6 +1,7 @@
 package configs
 
 import (
+	"github.com/devfurkankizmaz/iosclass-backend/models"
 	"log"
 	"os"
 
@@ -11,12 +12,17 @@ import (
 
 func NewDBConnection() *gorm.DB {
 	var err error
-	dbUrl := os.Getenv("DB_URL")
-	println(dbUrl)
 
-	DB, err := gorm.Open(postgres.Open(dbUrl), &gorm.Config{})
+	DB, err := gorm.Open(postgres.Open(os.Getenv("DB_URL")), &gorm.Config{})
 	if err != nil {
 		log.Fatal("Failed to connect to the Database! \n", err.Error())
+		os.Exit(1)
+	}
+
+	err = DB.AutoMigrate(&models.User{}, &models.Travel{}, &models.Address{})
+
+	if err != nil {
+		log.Fatal("Migration Failed:  \n", err.Error())
 		os.Exit(1)
 	}
 
