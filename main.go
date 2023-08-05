@@ -17,7 +17,9 @@ func main() {
 
 	app := configs.App()
 
-	server.Use(middleware.Static("/docs"))
+	server.GET("/docs", func(c echo.Context) error {
+		return c.File("docs_index.html")
+	})
 
 	routes.Setup(app.DB, server)
 
