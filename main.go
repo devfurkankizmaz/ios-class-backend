@@ -1,7 +1,3 @@
-/*
- * @File: main.go
- * @Author: Furkan Kızmaz (dev.furkan@outlook.com)
- */
 package main
 
 import (
@@ -18,8 +14,11 @@ func main() {
 	server.Use(middleware.Logger())
 	server.Use(middleware.Recover())
 	server.Use(middleware.CORS())
-	server.Use(middleware.Static("/docs"))
+
 	app := configs.App()
+
+	server.Use(middleware.Static("/docs"))
+
 	routes.Setup(app.DB, server)
 
 	server.GET("/", HealthCheck)
