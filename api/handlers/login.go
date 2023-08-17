@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/devfurkankizmaz/iosclass-backend/models"
 	"github.com/go-playground/validator"
@@ -26,6 +27,10 @@ func (lh *LoginHandler) Login(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
+
+	// E-posta adresini küçük harfe çevirerek işleyin
+	payload.Email = strings.ToLower(payload.Email)
+
 	user, err := lh.LoginService.FetchByEmail(payload.Email)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, models.Response{Message: "User not found with the given email", Status: "not found"})
