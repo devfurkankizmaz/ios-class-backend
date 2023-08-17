@@ -13,8 +13,8 @@ type Address struct {
 	City         string     `gorm:"type:varchar(50);not null"`
 	Country      string     `gorm:"type:varchar(50);not null"`
 	Address      string     `gorm:"type:varchar(255);not null"`
-	Latitude     float64    `gorm:"type:float;not null"`
-	Longitude    float64    `gorm:"type:float;not null"`
+	Latitude     float64    `gorm:"type:float"`
+	Longitude    float64    `gorm:"type:float"`
 	CreatedAt    *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 	UpdatedAt    *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 }
