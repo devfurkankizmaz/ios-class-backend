@@ -57,8 +57,8 @@ Authenticate and login user.
 **Response:**
 ```json
 {
-  "accessToken": "access_token",
-  "refreshToken": "refresh_token"
+  "AccessToken": "access_token",
+  "RefreshToken": "refresh_token"
 }
 ```
 

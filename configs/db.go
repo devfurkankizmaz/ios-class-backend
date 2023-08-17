@@ -26,12 +26,14 @@ func NewDBConnection() *gorm.DB {
 		os.Exit(1)
 	}
 
-	// Add new fields Latitude and Longitude to Address model
-	err = DB.AutoMigrate(&models.Address{
-		Latitude:  0.0,
-		Longitude: 0.0,
-	})
+	// Drop and re-create the Address table with new fields
+	err = DB.Migrator().DropTable(&models.Address{})
+	if err != nil {
+		log.Fatal("Migration Failed:  \n", err.Error())
+		os.Exit(1)
+	}
 
+	err = DB.AutoMigrate(&models.Address{})
 	if err != nil {
 		log.Fatal("Migration Failed:  \n", err.Error())
 		os.Exit(1)
