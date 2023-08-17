@@ -3,7 +3,8 @@ package models
 import "github.com/golang-jwt/jwt/v4"
 
 type Response struct {
-	Message interface{}
+	Message interface{} `json:"message"`
+	Status  string      `json:"status"`
 }
 
 type JwtCustomClaims struct {

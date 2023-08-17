@@ -20,19 +20,19 @@ func (lh *LoginHandler) Login(c echo.Context) error {
 	var payload *models.LoginInput
 	err := c.Bind(&payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
 	err = validate.Struct(payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
 	user, err := lh.LoginService.FetchByEmail(payload.Email)
 	if err != nil {
-		return c.JSON(http.StatusNotFound, models.Response{Message: "User not found with the given email"})
+		return c.JSON(http.StatusNotFound, models.Response{Message: "User not found with the given email", Status: "not found"})
 	}
 
 	if bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(payload.Password)) != nil {
-		return c.JSON(http.StatusUnauthorized, models.Response{Message: "Invalid credentials"})
+		return c.JSON(http.StatusUnauthorized, models.Response{Message: "Invalid credentials", Status: "unauthorized"})
 	}
 
 	jwtSecret := os.Getenv("JWT_SECRET")
@@ -43,11 +43,11 @@ func (lh *LoginHandler) Login(c echo.Context) error {
 	jwtExpiresIn, err := strconv.Atoi(jwtExpiresInStr)
 	accessToken, err := lh.LoginService.GenerateAccessToken(&user, jwtSecret, jwtExpiresIn)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error(), Status: "error"})
 	}
 	refreshToken, err := lh.LoginService.GenerateRefreshToken(&user, jwtRefreshSecret, jwtRefreshExpiresIn)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error(), Status: "error"})
 	}
 
 	return c.JSON(http.StatusOK, models.LoginResponse{AccessToken: accessToken, RefreshToken: refreshToken})

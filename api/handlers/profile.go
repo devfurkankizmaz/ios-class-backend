@@ -17,7 +17,7 @@ func (ph *ProfileHandler) Fetch(c echo.Context) error {
 	newUID := fmt.Sprint(userID)
 	profile, err := ph.ProfileService.FetchProfileByID(newUID)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error(), Status: "error"})
 	}
 	return c.JSON(http.StatusOK, profile)
 }

@@ -20,15 +20,15 @@ func (rh *RegisterHandler) Register(c echo.Context) error {
 
 	err := c.Bind(&payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
 	err = validate.Struct(payload)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(payload.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
 
 	newUser := models.User{
@@ -40,7 +40,7 @@ func (rh *RegisterHandler) Register(c echo.Context) error {
 	err = rh.RegisterService.Create(&newUser)
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error()})
+		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error(), Status: "error"})
 	}
 	response := fmt.Sprintf("Inserted ID: %s", newUser.ID)
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
