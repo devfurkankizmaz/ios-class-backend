@@ -26,6 +26,17 @@ func NewDBConnection() *gorm.DB {
 		os.Exit(1)
 	}
 
+	// Add new fields Latitude and Longitude to Address model
+	err = DB.AutoMigrate(&models.Address{
+		Latitude:  0.0,
+		Longitude: 0.0,
+	})
+
+	if err != nil {
+		log.Fatal("Migration Failed:  \n", err.Error())
+		os.Exit(1)
+	}
+
 	DB.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 	query1 := `ALTER TABLE users
            ADD CONSTRAINT IF NOT EXISTS fk_user_addresses FOREIGN KEY (user_id) REFERENCES addresses(id) ON DELETE CASCADE;`
