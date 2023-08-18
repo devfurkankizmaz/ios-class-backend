@@ -36,6 +36,8 @@ func (th *TravelHandler) Create(c echo.Context) error {
 		VisitDate:   payload.VisitDate,
 		Location:    payload.Location,
 		Information: payload.Information,
+		Latitude:    payload.Latitude,
+		Longitude:   payload.Longitude,
 	}
 
 	err = th.TravelService.Create(&newTravel)
@@ -71,6 +73,8 @@ func (th *TravelHandler) FetchAllByUserID(c echo.Context) error {
 			VisitDate:   v.VisitDate,
 			Location:    v.Location,
 			Information: v.Information,
+			Latitude:    v.Latitude,
+			Longitude:   v.Longitude,
 			CreatedAt:   v.CreatedAt,
 			UpdatedAt:   v.UpdatedAt,
 		}
@@ -93,6 +97,8 @@ func (th *TravelHandler) FetchByID(c echo.Context) error {
 		VisitDate:   travel.VisitDate,
 		Location:    travel.Location,
 		Information: travel.Information,
+		Latitude:    travel.Latitude,
+		Longitude:   travel.Longitude,
 		CreatedAt:   travel.CreatedAt,
 		UpdatedAt:   travel.UpdatedAt,
 	}
@@ -120,6 +126,8 @@ func (th *TravelHandler) UpdateByID(c echo.Context) error {
 		VisitDate:   payload.VisitDate,
 		Location:    payload.Location,
 		Information: payload.Information,
+		Latitude:    payload.Latitude,
+		Longitude:   payload.Longitude,
 		UpdatedAt:   &cr,
 	}
 

@@ -81,7 +81,9 @@
 <pre><code class="language-json">{
   "visit_date": "2023-08-10T00:00:00Z",
   "location": "Destination City",
-  "information": "Travel details here"
+  "information": "Travel details here",
+  "latitude": "Latitude",
+  "longitude": "Longitude"
 }
 </code></pre>
 <p><strong>Response:</strong></p>
@@ -89,6 +91,8 @@
   "visit_date": "2023-08-10T00:00:00Z",
   "location": "Destination City",
   "information": "Travel details here",
+  "latitude": "Latitude",
+  "longitude": "Longitude",
   "created_at": "2023-08-05T12:34:56Z",
   "updated_at": "2023-08-05T12:34:56Z"
 }
@@ -101,6 +105,7 @@
 <p><strong>Endpoint:</strong> <code>GET /v1/travels/$(travelId)</code></p>
 <h3 id="update-travel">Update Travel</h3>
 <p>Update details of a specific travel entry.</p>
+
 <p><strong>Endpoint:</strong> <code>PUT /v1/travels/$(travelId)</code></p>
 <h3 id="delete-travel">Delete Travel</h3>
 <p>Delete a specific travel entry.</p>
