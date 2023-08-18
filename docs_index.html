@@ -82,6 +82,7 @@
   "visit_date": "2023-08-10T00:00:00Z",
   "location": "Destination City",
   "information": "Travel details here",
+  "image_url": "URL here",
   "latitude": "Latitude",
   "longitude": "Longitude"
 }
@@ -91,6 +92,7 @@
   "visit_date": "2023-08-10T00:00:00Z",
   "location": "Destination City",
   "information": "Travel details here",
+  "image_url": "URL here",
   "latitude": "Latitude",
   "longitude": "Longitude",
   "created_at": "2023-08-05T12:34:56Z",
@@ -100,6 +102,16 @@
 <h3 id="list-travels">List Travels</h3>
 <p>Get a list of travel entries.</p>
 <p><strong>Endpoint:</strong> <code>GET /v1/travels?page=1&amp;limit=10</code></p>
+    </code></pre>
+    <p><strong>Response:</strong></p>
+    <pre><code class="language-json">{
+	"data": {
+		"travels": [],
+		"count": 0
+	},
+	"status": "success"
+}
+</code></pre>
 <h3 id="get-travel-by-id">Get Travel by ID</h3>
 <p>Get details of a specific travel entry.</p>
 <p><strong>Endpoint:</strong> <code>GET /v1/travels/$(travelId)</code></p>
@@ -121,9 +133,7 @@
   "state": "State",
   "city": "City",
   "country": "Country",
-  "address": "Address",
-  "latitude": "Latitude",
-  "longitude": "Longitude"
+  "address": "Address"
 }
 </code></pre>
 <p><strong>Response:</strong></p>
@@ -133,8 +143,6 @@
   "city": "City",
   "country": "Country",
   "address": "Address",
-  "latitude": "Latitude",
-  "longitude": "Longitude",
   "created_at": "2023-08-05T12:34:56Z",
   "updated_at": "2023-08-05T12:34:56Z"
 }
@@ -142,6 +150,16 @@
 <h3 id="list-addresses">List Addresses</h3>
 <p>Get a list of address entries.</p>
 <p><strong>Endpoint:</strong> <code>GET /v1/addresses</code></p>
+    </code></pre>
+    <p><strong>Response:</strong></p>
+    <pre><code class="language-json">{
+	"data": {
+		"addresses": [],
+		"count": 0
+	},
+	"status": "success"
+}
+</code></pre>
 <h3 id="get-address-by-id">Get Address by ID</h3>
 <p>Get details of a specific address entry.</p>
 <p><strong>Endpoint:</strong> <code>GET /v1/addresses/$(addressId)</code></p>

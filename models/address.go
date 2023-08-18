@@ -13,20 +13,16 @@ type Address struct {
 	City         string     `gorm:"type:varchar(50);not null"`
 	Country      string     `gorm:"type:varchar(50);not null"`
 	Address      string     `gorm:"type:varchar(255);not null"`
-	Latitude     float64    `gorm:"type:float"`
-	Longitude    float64    `gorm:"type:float"`
 	CreatedAt    *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 	UpdatedAt    *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 }
 
 type AddressInput struct {
-	AddressTitle string  `json:"address_title" validate:"required"`
-	State        string  `json:"state"`
-	City         string  `json:"city" validate:"required"`
-	Country      string  `json:"country" validate:"required"`
-	Address      string  `json:"address" validate:"required"`
-	Latitude     float64 `json:"latitude" validate:"required"`
-	Longitude    float64 `json:"longitude" validate:"required"`
+	AddressTitle string `json:"address_title" validate:"required"`
+	State        string `json:"state"`
+	City         string `json:"city" validate:"required"`
+	Country      string `json:"country" validate:"required"`
+	Address      string `json:"address" validate:"required"`
 }
 
 type AddressResponse struct {
@@ -36,8 +32,6 @@ type AddressResponse struct {
 	City         string     `json:"city"`
 	Country      string     `json:"country"`
 	Address      string     `json:"address"`
-	Latitude     float64    `json:"latitude"`
-	Longitude    float64    `json:"longitude"`
 	CreatedAt    *time.Time `json:"created_at"`
 	UpdatedAt    *time.Time `json:"updated_at"`
 }

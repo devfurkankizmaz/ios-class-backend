@@ -37,8 +37,6 @@ func (ah *AddressHandler) Create(c echo.Context) error {
 		City:         payload.City,
 		Country:      payload.Country,
 		Address:      payload.Address,
-		Latitude:     payload.Latitude,
-		Longitude:    payload.Longitude,
 	}
 
 	err = ah.AddressService.Create(&newAddress)
@@ -67,8 +65,6 @@ func (ah *AddressHandler) FetchAllByUserID(c echo.Context) error {
 			City:         v.City,
 			Country:      v.Country,
 			Address:      v.Address,
-			Latitude:     v.Latitude,
-			Longitude:    v.Longitude,
 			CreatedAt:    v.CreatedAt,
 			UpdatedAt:    v.UpdatedAt,
 		}
@@ -93,8 +89,6 @@ func (ah *AddressHandler) FetchByID(c echo.Context) error {
 		City:         address.City,
 		Country:      address.Country,
 		Address:      address.Address,
-		Latitude:     address.Latitude,
-		Longitude:    address.Longitude,
 		CreatedAt:    address.CreatedAt,
 		UpdatedAt:    address.UpdatedAt,
 	}
@@ -124,8 +118,6 @@ func (ah *AddressHandler) UpdateByID(c echo.Context) error {
 		City:         payload.City,
 		Country:      payload.Country,
 		Address:      payload.Address,
-		Latitude:     payload.Latitude,
-		Longitude:    payload.Longitude,
 		UpdatedAt:    &cr,
 	}
 

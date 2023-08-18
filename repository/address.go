@@ -42,7 +42,7 @@ func (ar *addressRepository) FetchByID(id string) (models.Address, error) {
 }
 
 func (ar *addressRepository) UpdateByID(address *models.Address, id string) error {
-	columbs := map[string]interface{}{"address_title": address.AddressTitle, "city": address.City, "state": address.State, "country": address.Country, "address": address.Address, "latitude": address.Latitude, "longitude": address.Longitude}
+	columbs := map[string]interface{}{"address_title": address.AddressTitle, "city": address.City, "state": address.State, "country": address.Country, "address": address.Address}
 	result := ar.db.Model(&address).Where("id = ?", id).Updates(columbs)
 
 	if result.Error != nil {

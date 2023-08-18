@@ -19,6 +19,14 @@ func NewDBConnection() *gorm.DB {
 		os.Exit(1)
 	}
 
+	// Drop and re-create the Address table with new fields
+	err = DB.Migrator().DropTable(&models.Address{})
+	err = DB.Migrator().DropTable(&models.Travel{})
+	if err != nil {
+		log.Fatal("Migration Failed:  \n", err.Error())
+		os.Exit(1)
+	}
+
 	err = DB.AutoMigrate(&models.User{}, &models.Travel{}, &models.Address{})
 
 	if err != nil {
@@ -26,28 +34,15 @@ func NewDBConnection() *gorm.DB {
 		os.Exit(1)
 	}
 
-	// Drop and re-create the Address table with new fields
-	err = DB.Migrator().DropTable(&models.Address{})
-	if err != nil {
-		log.Fatal("Migration Failed:  \n", err.Error())
-		os.Exit(1)
-	}
-
-	err = DB.AutoMigrate(&models.Address{})
-	if err != nil {
-		log.Fatal("Migration Failed:  \n", err.Error())
-		os.Exit(1)
-	}
-
-	DB.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
 	query1 := `ALTER TABLE users
-           ADD CONSTRAINT IF NOT EXISTS fk_user_addresses FOREIGN KEY (user_id) REFERENCES addresses(id) ON DELETE CASCADE;`
+           ADD CONSTRAINT fk_user_addresses FOREIGN KEY (user_id) REFERENCES addresses(id) ON DELETE CASCADE;`
 
 	query2 := `ALTER TABLE users
-           ADD CONSTRAINT IF NOT EXISTS fk_user_travels FOREIGN KEY (user_id) REFERENCES travels(id) ON DELETE CASCADE;`
+           ADD CONSTRAINT fk_user_travels FOREIGN KEY (user_id) REFERENCES travels(id) ON DELETE CASCADE;`
 
 	DB.Exec(query1)
 	DB.Exec(query2)
+
 	query := `CREATE UNIQUE INDEX IF NOT EXISTS idx_user_email ON users(email);`
 
 	DB.Exec(query)

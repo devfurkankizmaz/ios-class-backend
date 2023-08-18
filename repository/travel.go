@@ -42,7 +42,7 @@ func (tr *travelRepository) FetchByID(id string) (models.Travel, error) {
 }
 
 func (tr *travelRepository) UpdateByID(travel *models.Travel, id string) error {
-	columbs := map[string]interface{}{"visit_date": travel.VisitDate, "location": travel.Location, "information": travel.Information, "latitude": travel.Latitude, "longitude": travel.Longitude}
+	columbs := map[string]interface{}{"visit_date": travel.VisitDate, "location": travel.Location, "information": travel.Information, "image_url": travel.ImageUrl, "latitude": travel.Latitude, "longitude": travel.Longitude}
 	result := tr.db.Model(&travel).Where("id = ?", id).Updates(columbs)
 
 	if result.Error != nil {
