@@ -18,7 +18,7 @@ func main() {
 	app := configs.App()
 
 	server.GET("/docs", func(c echo.Context) error {
-		return c.File("docs_index.html")
+		return c.File("index_docs.html")
 	})
 
 	routes.Setup(app.DB, server)

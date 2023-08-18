@@ -39,13 +39,12 @@ func NewDBConnection() *gorm.DB {
 
 	query2 := `ALTER TABLE users
            ADD CONSTRAINT fk_user_travels FOREIGN KEY (user_id) REFERENCES travels(id) ON DELETE CASCADE;`
+	query := `CREATE UNIQUE INDEX IF NOT EXISTS idx_user_email ON users(email);`
 
 	DB.Exec(query1)
 	DB.Exec(query2)
-
-	query := `CREATE UNIQUE INDEX IF NOT EXISTS idx_user_email ON users(email);`
-
 	DB.Exec(query)
+
 	DB.Logger = logger.Default.LogMode(logger.Info)
 
 	log.Println("Connected to DB")

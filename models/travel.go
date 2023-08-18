@@ -13,8 +13,8 @@ type Travel struct {
 	Location    string     `gorm:"type:varchar(255);not null"`
 	ImageUrl    string     `gorm:"type:varchar(255)"`
 	Information string     `gorm:"type:text"`
-	Latitude    string     `gorm:"type:float"`
-	Longitude   string     `gorm:"type:float"`
+	Latitude    float64    `gorm:"type:float;not null"`
+	Longitude   float64    `gorm:"type:float;not null"`
 	CreatedAt   *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 	UpdatedAt   *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 }
@@ -22,10 +22,10 @@ type Travel struct {
 type TravelInput struct {
 	VisitDate   *time.Time `json:"visit_date" validate:"required"`
 	Location    string     `json:"location" validate:"required"`
-	Information string     `json:"information" validate:"required"`
-	ImageUrl    string     `json:"image_url" validate:"required"`
-	Latitude    string     `json:"latitude" validate:"required"`
-	Longitude   string     `json:"longitude" validate:"required"`
+	Information string     `json:"information"`
+	ImageUrl    string     `json:"image_url"`
+	Latitude    float64    `json:"latitude" validate:"required"`
+	Longitude   float64    `json:"longitude" validate:"required"`
 }
 
 type TravelResponse struct {
@@ -34,8 +34,8 @@ type TravelResponse struct {
 	Location    string     `json:"location"`
 	Information string     `json:"information"`
 	ImageUrl    string     `json:"image_url"`
-	Latitude    string     `json:"latitude"`
-	Longitude   string     `json:"longitude"`
+	Latitude    float64    `json:"latitude"`
+	Longitude   float64    `json:"longitude"`
 	CreatedAt   *time.Time `json:"created_at"`
 	UpdatedAt   *time.Time `json:"updated_at"`
 }

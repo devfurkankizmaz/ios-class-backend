@@ -52,13 +52,17 @@ func (th *TravelHandler) Create(c echo.Context) error {
 func (th *TravelHandler) FetchAllByUserID(c echo.Context) error {
 	newUID := fmt.Sprint(c.Get("x-user-id"))
 
-	limit, err := strconv.Atoi(c.QueryParam("limit"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
+	limitParam := c.QueryParam("limit")
+	pageParam := c.QueryParam("page")
+
+	limit := 100
+	if limitParam != "" {
+		limit, _ = strconv.Atoi(limitParam)
 	}
-	page, err := strconv.Atoi(c.QueryParam("page"))
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
+
+	page := 1
+	if pageParam != "" {
+		page, _ = strconv.Atoi(pageParam)
 	}
 
 	travels, err := th.TravelService.FetchAllByUserID(newUID, limit, page)

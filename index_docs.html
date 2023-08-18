@@ -1,0 +1,340 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+
+<body class="stackedit">
+
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+	<li>
+		<div class="github-link" style="display: flex; align-items: center;">
+			<img src="https://icons.iconarchive.com/icons/pictogrammers/material/128/github-icon.png" width="64" height="64" style="margin-right: 10px;">
+			<a href="https://github.com/devfurkankizmaz/ios-class-backend" style="text-decoration: none; color: blue;">Source Code (GitHub)</a>
+		</div>
+	</li>
+<li><a href="#api-documentation">API Documentation</a></li>
+<li><a href="#public-routes">Public Routes</a>
+<ul>
+<li><a href="#register-user">Register User</a></li>
+<li><a href="#user-login">User Login</a></li>
+<li><a href="#refresh-token">Refresh Token</a></li>
+</ul>
+</li>
+<li><a href="#protected-routes">Protected Routes</a>
+<ul>
+<li><a href="#get-user-profile">Get User Profile</a></li>
+<li><a href="#create-a-travel">Create a Travel</a></li>
+<li><a href="#list-travels">List Travels</a></li>
+<li><a href="#get-travel-by-id">Get Travel by ID</a></li>
+<li><a href="#update-travel">Update Travel</a></li>
+<li><a href="#delete-travel">Delete Travel</a></li>
+<li><a href="#create-address">Create Address</a></li>
+<li><a href="#list-addresses">List Addresses</a></li>
+<li><a href="#get--an-address-by-id">Get  an Address by ID</a></li>
+<li><a href="#update-address">Update Address</a></li>
+<li><a href="#delete-address">Delete Address</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="api-documentation">API Documentation</h1>
+<p>Welcome to the API documentation for our service. This API allows you to manage addresses and travel information, as well as user authentication.</p>
+<h1 id="public-routes">Public Routes</h1>
+<h2 id="register-user">Register User</h2>
+<p>Register a new user.<br>
+<strong>Endpoint:</strong> <code>POST /v1/auth/register</code></p>
+<p><strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"full_name"</span><span class="token punctuation">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>  
+	<span class="token string">"email"</span><span class="token punctuation">:</span> <span class="token string">"johndoe@example.com"</span><span class="token punctuation">,</span>  
+	<span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"secretpassword"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"Inserted ID: d00e6165-8453-4e69-b07d-82a87cfb51fa"</span><span class="token punctuation">,</span>  
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<h2 id="user-login">User Login</h2>
+<p>Authenticate and login user.<br>
+<strong>Endpoint:</strong> <code>POST /v1/auth/login</code></p>
+<p><strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"email"</span><span class="token punctuation">:</span> <span class="token string">"johndoe@example.com"</span><span class="token punctuation">,</span>  
+	<span class="token string">"password"</span><span class="token punctuation">:</span> <span class="token string">"secretpassword"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"accessToken"</span><span class="token punctuation">:</span> <span class="token string">"access_token"</span><span class="token punctuation">,</span>  
+	<span class="token string">"refreshToken"</span><span class="token punctuation">:</span> <span class="token string">"refresh_token"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<h2 id="refresh-token">Refresh Token</h2>
+<p>Refresh user access token.<br>
+<strong>Endpoint:</strong> <code>POST /v1/auth/refresh</code></p>
+<p><strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"refresh_token"</span><span class="token punctuation">:</span> <span class="token string">"refresh_token_here"</span>  
+<span class="token punctuation">}</span>  
+  
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"accessToken"</span><span class="token punctuation">:</span> <span class="token string">"new_access_token"</span><span class="token punctuation">,</span>  
+	<span class="token string">"refreshToken"</span><span class="token punctuation">:</span> <span class="token string">"new_refresh_token"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<h1 id="protected-routes">Protected Routes</h1>
+<p>Note: For protected routes, include the Authorization header with the value Bearer &lt;access_token&gt;.</p>
+<h2 id="get-user-profile">Get User Profile</h2>
+<p>Get user’s profile information.<br>
+<strong>Endpoint:</strong> <code>GET /v1/me</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"user_id"</span><span class="token punctuation">,</span>  
+	<span class="token string">"full_name"</span><span class="token punctuation">:</span> <span class="token string">"John Doe"</span><span class="token punctuation">,</span>  
+	<span class="token string">"email"</span><span class="token punctuation">:</span> <span class="token string">"johndoe@example.com"</span><span class="token punctuation">,</span>  
+	<span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user_role"</span><span class="token punctuation">,</span>  
+	<span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-05T12:34:56Z"</span><span class="token punctuation">,</span>  
+	<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-05T12:34:56Z"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<h2 id="create-a-travel">Create a Travel</h2>
+<p>Create a new travel entry.<br>
+<strong>Endpoint:</strong> <code>POST /v1/travels</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
+<p><strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+  <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+  <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+  <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
+  <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"https://example.com/image.png"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
+  <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">37.12353</span><span class="token punctuation">,</span>
+  <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">122.95421</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+   <span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"Inserted ID: 01abd8f0-2e1d-4a39-9e8a-7fb55da83760"</span><span class="token punctuation">,</span>
+   <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="list-travels">List Travels</h2>
+<p>Get a list of travel entries.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/travels?page=1&amp;limit=10</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+  <span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">"count"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token string">"travels"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"39fa7def-a4ce-42e1-8f66-97b6fdecd639"</span><span class="token punctuation">,</span>
+        <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+        <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+        <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span>
+        <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"URL here"</span><span class="token punctuation">,</span>
+        <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">42.0</span><span class="token punctuation">,</span>
+        <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token number">122.0</span><span class="token punctuation">,</span>
+        <span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:46.869205Z"</span><span class="token punctuation">,</span>
+        <span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:46.869205Z"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"8d76b17b-67fa-4afe-a335-b0c089e50255"</span><span class="token punctuation">,</span>
+        <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+        <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+        <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span>
+        <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"URL here"</span><span class="token punctuation">,</span>
+        <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">42.0</span><span class="token punctuation">,</span>
+        <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token number">122.0</span><span class="token punctuation">,</span>
+        <span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:47.678662Z"</span><span class="token punctuation">,</span>
+        <span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:47.678662Z"</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"01abd8f0-2e1d-4a39-9e8a-7fb55da83760"</span><span class="token punctuation">,</span>
+        <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+        <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+        <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span>
+        <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"URL here"</span><span class="token punctuation">,</span>
+        <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">42.0</span><span class="token punctuation">,</span>
+        <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token number">122.0</span><span class="token punctuation">,</span>
+        <span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:51.010944Z"</span><span class="token punctuation">,</span>
+        <span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:51.010944Z"</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+
+
+</code></pre>
+<h2 id="get-travel-by-id">Get Travel by ID</h2>
+<p>Get details of a specific travel entry.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/travels/$(travelId)</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"travel"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"0d498d8a-2c2a-4908-b03b-e153762cecde"</span><span class="token punctuation">,</span>
+			<span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+			<span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+			<span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span>
+			<span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"https://example.com/image2.jpg"</span><span class="token punctuation">,</span>
+			<span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">48.8566</span><span class="token punctuation">,</span>
+			<span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token number">122.12353</span><span class="token punctuation">,</span>
+			<span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:40.687527Z"</span><span class="token punctuation">,</span>
+			<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T20:49:40.687527Z"</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<h2 id="update-travel">Update Travel</h2>
+<p>Update details of a specific travel entry.</p>
+<p><strong>Endpoint:</strong> <code>PUT /v1/travels/$(travelId)</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+  <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+  <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+  <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
+  <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"https://example.com/image.png"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
+  <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">37.12353</span><span class="token punctuation">,</span>
+  <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">122.95421</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+	<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:02:07.893623112Z"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="delete-travel">Delete Travel</h2>
+<p>Delete a specific travel entry.</p>
+<p><strong>Endpoint:</strong> <code>DELETE /v1/travels/$(travelId)</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"travel successfully deleted"</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="address">Address</h3>
+<p>Perform operations related to addresses.</p>
+<h2 id="create-address">Create Address</h2>
+<p>Create a new address entry.</p>
+<p><strong>Endpoint:</strong> <code>POST /v1/addresses</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"address_title"</span><span class="token punctuation">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span>  
+	<span class="token string">"state"</span><span class="token punctuation">:</span> <span class="token string">"State"</span><span class="token punctuation">,</span>  
+	<span class="token string">"city"</span><span class="token punctuation">:</span> <span class="token string">"City"</span><span class="token punctuation">,</span>  
+	<span class="token string">"country"</span><span class="token punctuation">:</span> <span class="token string">"Country"</span><span class="token punctuation">,</span>  
+	<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token string">"Address"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"Inserted ID: 39e25b3e-fe18-45d1-98c7-4c22c56c0d33"</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="list-addresses">List Addresses</h2>
+<p>Get a list of address entries.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/addresses</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"addresses"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+			<span class="token punctuation">{</span>
+				<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"39e25b3e-fe18-45d1-98c7-4c22c56c0d33"</span><span class="token punctuation">,</span>
+				<span class="token string">"address_title"</span><span class="token punctuation">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span>
+				<span class="token string">"state"</span><span class="token punctuation">:</span> <span class="token string">"State"</span><span class="token punctuation">,</span>
+				<span class="token string">"city"</span><span class="token punctuation">:</span> <span class="token string">"City"</span><span class="token punctuation">,</span>
+				<span class="token string">"country"</span><span class="token punctuation">:</span> <span class="token string">"Country"</span><span class="token punctuation">,</span>
+				<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token string">"Address"</span><span class="token punctuation">,</span>
+				<span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:06:26.866468Z"</span><span class="token punctuation">,</span>
+				<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:06:26.866468Z"</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">]</span><span class="token punctuation">,</span>
+		<span class="token string">"count"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="get--an-address-by-id">Get  an Address by ID</h2>
+<p>Get details of a specific address entry.</p>
+<p><strong>Endpoint:</strong> <code>GET /v1/addresses/$(addressId)</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+			<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"39e25b3e-fe18-45d1-98c7-4c22c56c0d33"</span><span class="token punctuation">,</span>
+			<span class="token string">"address_title"</span><span class="token punctuation">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span>
+			<span class="token string">"state"</span><span class="token punctuation">:</span> <span class="token string">"State"</span><span class="token punctuation">,</span>
+			<span class="token string">"city"</span><span class="token punctuation">:</span> <span class="token string">"City"</span><span class="token punctuation">,</span>
+			<span class="token string">"country"</span><span class="token punctuation">:</span> <span class="token string">"Country"</span><span class="token punctuation">,</span>
+			<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token string">"Address"</span><span class="token punctuation">,</span>
+			<span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:06:26.866468Z"</span><span class="token punctuation">,</span>
+			<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:06:26.866468Z"</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="update-address">Update Address</h2>
+<p>Update details of a specific address entry.</p>
+<p><strong>Endpoint:</strong> <code>PUT /v1/addresses/$(addressId)</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Request:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>  
+	<span class="token string">"address_title"</span><span class="token punctuation">:</span> <span class="token string">"Home"</span><span class="token punctuation">,</span>  
+	<span class="token string">"state"</span><span class="token punctuation">:</span> <span class="token string">"State"</span><span class="token punctuation">,</span>  
+	<span class="token string">"city"</span><span class="token punctuation">:</span> <span class="token string">"City"</span><span class="token punctuation">,</span>  
+	<span class="token string">"country"</span><span class="token punctuation">:</span> <span class="token string">"Country"</span><span class="token punctuation">,</span>  
+	<span class="token string">"address"</span><span class="token punctuation">:</span> <span class="token string">"Address"</span>  
+<span class="token punctuation">}</span>  
+</code></pre>
+<p><strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span><span class="token punctuation">,</span>
+	<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:09:24.995913194Z"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="delete-address">Delete Address</h2>
+<p>Delete a specific address entry.</p>
+<p><strong>Endpoint:</strong> <code>DELETE /v1/addresses/$(addressId)</code><br>
+<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code><br>
+<strong>Response:</strong></p>
+<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"address successfully deleted"</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
