@@ -42,6 +42,6 @@ func (rh *RegisterHandler) Register(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error(), Status: "error"})
 	}
-	response := fmt.Sprintf("Inserted ID: %s", newUser.ID)
+	response := fmt.Sprintf("You're registered successfully.")
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
 }

@@ -45,7 +45,7 @@ func (th *TravelHandler) Create(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-	response := fmt.Sprintf("Inserted ID: %s", newTravel.ID)
+	response := fmt.Sprintf("Travel successfully created.")
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
 }
 
@@ -144,7 +144,7 @@ func (th *TravelHandler) UpdateByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{"status": "success", "updated_at": updatedTravel.UpdatedAt})
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "Travel successfully updated"})
 }
 
 func (th *TravelHandler) DeleteByID(c echo.Context) error {
@@ -156,5 +156,5 @@ func (th *TravelHandler) DeleteByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "travel successfully deleted"})
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "Travel successfully deleted"})
 }

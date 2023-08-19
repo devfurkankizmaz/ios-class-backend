@@ -43,7 +43,7 @@ func (ah *AddressHandler) Create(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-	response := fmt.Sprintf("Inserted ID: %s", newAddress.ID)
+	response := fmt.Sprintf("Address created successfully.")
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
 }
 
@@ -126,7 +126,7 @@ func (ah *AddressHandler) UpdateByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{"status": "success", "updated_at": updatedAddress.UpdatedAt})
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "Address successfully updated"})
 }
 
 func (ah *AddressHandler) DeleteByID(c echo.Context) error {
@@ -138,5 +138,5 @@ func (ah *AddressHandler) DeleteByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "address successfully deleted"})
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "Address successfully deleted"})
 }
