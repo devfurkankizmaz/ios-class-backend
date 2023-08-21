@@ -1,7 +1,6 @@
 package configs
 
 import (
-	"github.com/devfurkankizmaz/iosclass-backend/models"
 	"log"
 	"os"
 
@@ -27,12 +26,12 @@ func NewDBConnection() *gorm.DB {
 	//	os.Exit(1)
 	//}
 
-	err = DB.AutoMigrate(&models.User{}, &models.Travel{}, &models.Address{})
+	//err = DB.AutoMigrate(&models.User{}, &models.Travel{}, &models.Address{})
 
-	if err != nil {
-		log.Fatal("Migration Failed:  \n", err.Error())
-		os.Exit(1)
-	}
+	//if err != nil {
+	//	log.Fatal("Migration Failed:  \n", err.Error())
+	//	os.Exit(1)
+	//}
 
 	//query1 := `ALTER TABLE users
 	//     ADD CONSTRAINT fk_user_addresses FOREIGN KEY (user_id) REFERENCES addresses(id) ON DELETE CASCADE;`

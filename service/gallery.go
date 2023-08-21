@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"github.com/devfurkankizmaz/iosclass-backend/models"
 )
 
@@ -13,7 +14,18 @@ func NewGalleryService(repo models.GalleryRepository) models.GalleryService {
 }
 
 func (gs *galleryService) Create(gallery *models.Gallery) error {
-	err := gs.galleryRepository.Create(gallery)
+
+	stringUuid := (gallery.TravelID).String()
+	existingImages, err := gs.galleryRepository.FetchAllByTravelID(stringUuid)
+	if err != nil {
+		return err
+	}
+
+	if len(existingImages) >= 3 {
+		return errors.New("maximum number of images reached for this travel")
+	}
+
+	err = gs.galleryRepository.Create(gallery)
 	if err != nil {
 		return err
 	}
