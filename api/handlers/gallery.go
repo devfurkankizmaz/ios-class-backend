@@ -59,7 +59,7 @@ func (gh *GalleryHandler) GetImagesByTravelID(c echo.Context) error {
 		}
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": response})
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"count": len(images), "images": response}})
 }
 
 func (gh *GalleryHandler) DeleteImageByTravelID(c echo.Context) error {

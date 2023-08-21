@@ -239,17 +239,45 @@
 
 	</code></pre>
 		<h2 id="create-a-gallery">Create a Gallery Image</h2>
-		<p>Create a new travel entry.<br>
-			<strong>Endpoint:</strong> <code>POST /v1/gallery/travelId</code><br>
+		<p>Create a new gallery entry.<br>
+			<strong>Endpoint:</strong> <code>POST /v1/galleries</code><br>
 			<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Request:</strong></p>
 		<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
-  <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
-  <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
-  <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
-  <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"https://example.com/image.png"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
-  <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">37.12353</span><span class="token punctuation">,</span>
-  <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">122.95421</span>
+  <span class="token string">"travel_id"</span><span class="token punctuation">:</span> <span class="token string">"358c3c03-a66a-4d03-adc7-84a1d9874d6e"</span><span class="token punctuation">,</span>
+  <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"https://example.com/tree.png"</span><span class="token punctuation">,</span>
+  <span class="token string">"caption"</span><span class="token punctuation">:</span> <span class="token string">"Bir ağaç resmi"</span><span class="token punctuation"></span> <span class="token operator"></span>
+<span class="token punctuation">}</span>
+</code></pre>
+		</code></pre>
+		<p><strong>Response:</strong></p>
+		<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"Image added to gallery"</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+		</code></pre>
+		<h2 id="get-all-gallery">Get All Gallery Images</h2>
+		<p>Create a new gallery entry.<br>
+			<strong>Endpoint:</strong> <code>GET /v1/galleries/travelId</code><br>
+			<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
+		</code></pre>
+		<strong>Response:</strong></p>
+		<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+		<span class="token string">"galleries"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+			<span class="token punctuation">{</span>
+				<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"39e25b3e-fe18-45d1-98c7-4c22c56c0d33"</span><span class="token punctuation">,</span>
+				<span class="token string">"travel_id"</span><span class="token punctuation">:</span> <span class="token string">"358c3c03-a66a-4d03-adc7-84a1d9874d6e"</span><span class="token punctuation">,</span>
+				<span class="token string">"caption"</span><span class="token punctuation">:</span> <span class="token string">"Bir ağaç resmi"</span><span class="token punctuation">,</span>
+				<span class="token string">"created_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:06:26.866468Z"</span><span class="token punctuation">,</span>
+				<span class="token string">"updated_at"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-18T21:06:26.866468Z"</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">]</span><span class="token punctuation">,</span>
+		<span class="token string">"count"</span><span class="token punctuation">:</span> <span class="token number">1</span>
+	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
 <span class="token punctuation">}</span>
 </code></pre>
 
