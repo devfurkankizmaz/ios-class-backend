@@ -85,7 +85,7 @@ func NewGalleryRouter(db *gorm.DB, group *echo.Group) {
 	h := &handlers.GalleryHandler{
 		GalleryService: service.NewGalleryService(r),
 	}
-	group.POST("/galleries", h.AddImageToTravel)
-	group.GET("/galleries", h.GetImagesByTravelID)
+	group.POST("/galleries/:travelId", h.AddImageToTravel)
+	group.GET("/galleries/:travelId", h.GetImagesByTravelID)
 	group.DELETE("/galleries/:travelId/:imageId", h.DeleteImageByTravelID)
 }
