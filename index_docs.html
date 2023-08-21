@@ -37,6 +37,9 @@
 <li><a href="#get-travel-by-id">Get Travel by ID</a></li>
 <li><a href="#update-travel">Update Travel</a></li>
 <li><a href="#delete-travel">Delete Travel</a></li>
+	<li><a href="#create-a-gallery">Create A Gallery Image</a></li>
+	<li><a href="#gell-all-gallery">Get All Gallery</a></li>
+	<li><a href="#delete-a-gallery">Delete Image From Gallery</a></li>
 <li><a href="#create-address">Create Address</a></li>
 <li><a href="#list-addresses">List Addresses</a></li>
 <li><a href="#get--an-address-by-id">Get  an Address by ID</a></li>
@@ -266,7 +269,7 @@
 		<strong>Response:</strong></p>
 		<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
 	<span class="token string">"data"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
-		<span class="token string">"galleries"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+		<span class="token string">"images"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
 			<span class="token punctuation">{</span>
 				<span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token string">"39e25b3e-fe18-45d1-98c7-4c22c56c0d33"</span><span class="token punctuation">,</span>
 				<span class="token string">"travel_id"</span><span class="token punctuation">:</span> <span class="token string">"358c3c03-a66a-4d03-adc7-84a1d9874d6e"</span><span class="token punctuation">,</span>
@@ -277,6 +280,19 @@
 		<span class="token punctuation">]</span><span class="token punctuation">,</span>
 		<span class="token string">"count"</span><span class="token punctuation">:</span> <span class="token number">1</span>
 	<span class="token punctuation">}</span><span class="token punctuation">,</span>
+	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
+<span class="token punctuation">}</span>
+</code></pre>
+		</code></pre>
+		<h2 id="delete-a-gallery">Delete Gallery Image</h2>
+		<p>Create a new gallery entry.<br>
+			<strong>Endpoint:</strong> <code>DELETE /v1/galleries/travelId/imageId</code><br>
+			<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
+		</code></pre>
+		</code></pre>
+		<p><strong>Response:</strong></p>
+		<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"Image deleted from gallery"</span><span class="token punctuation">,</span>
 	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
 <span class="token punctuation">}</span>
 </code></pre>
