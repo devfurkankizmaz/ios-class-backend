@@ -236,6 +236,23 @@
 	<span class="token string">"message"</span><span class="token punctuation">:</span> <span class="token string">"travel successfully deleted"</span><span class="token punctuation">,</span>
 	<span class="token string">"status"</span><span class="token punctuation">:</span> <span class="token string">"success"</span>
 <span class="token punctuation">}</span>
+
+	</code></pre>
+		<h2 id="create-a-gallery">Create a Gallery Image</h2>
+		<p>Create a new travel entry.<br>
+			<strong>Endpoint:</strong> <code>POST /v1/gallery/travelId</code><br>
+			<strong>Header:</strong> <code>"Authorization": "Bearer access_token"</code></p>
+		<p><strong>Request:</strong></p>
+		<pre class=" language-json"><code class="prism  language-json"><span class="token punctuation">{</span>
+  <span class="token string">"visit_date"</span><span class="token punctuation">:</span> <span class="token string">"2023-08-10T00:00:00Z"</span><span class="token punctuation">,</span>
+  <span class="token string">"location"</span><span class="token punctuation">:</span> <span class="token string">"Destination City"</span><span class="token punctuation">,</span>
+  <span class="token string">"information"</span><span class="token punctuation">:</span> <span class="token string">"Travel details here"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
+  <span class="token string">"image_url"</span><span class="token punctuation">:</span> <span class="token string">"https://example.com/image.png"</span><span class="token punctuation">,</span> <span class="token operator">?</span> Optional
+  <span class="token string">"latitude"</span><span class="token punctuation">:</span> <span class="token number">37.12353</span><span class="token punctuation">,</span>
+  <span class="token string">"longitude"</span><span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">122.95421</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
 </code></pre>
 <h3 id="address">Address</h3>
 <p>Perform operations related to addresses.</p>

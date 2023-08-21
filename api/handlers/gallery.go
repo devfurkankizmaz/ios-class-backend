@@ -17,11 +17,6 @@ func NewGalleryHandler(galleryService models.GalleryService) *GalleryHandler {
 }
 
 func (gh *GalleryHandler) AddImageToTravel(c echo.Context) error {
-	travelID := c.Param("travelId")
-	if travelID == "" {
-		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": "travelId param not found"})
-	}
-
 	var payload models.GalleryInput
 	if err := c.Bind(&payload); err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
