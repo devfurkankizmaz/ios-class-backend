@@ -21,6 +21,7 @@ func Setup(db *gorm.DB, g *echo.Echo) {
 	NewProfileRouter(db, protected)
 	NewTravelRouter(db, protected)
 	NewAddressRouter(db, protected)
+	NewGalleryRouter(db, protected)
 }
 
 func NewRegisterRouter(db *gorm.DB, group *echo.Group) {
@@ -77,4 +78,14 @@ func NewAddressRouter(db *gorm.DB, group *echo.Group) {
 	group.GET("/addresses/:addressId", h.FetchByID)
 	group.PUT("/addresses/:addressId", h.UpdateByID)
 	group.DELETE("/addresses/:addressId", h.DeleteByID)
+}
+
+func NewGalleryRouter(db *gorm.DB, group *echo.Group) {
+	r := repository.NewGalleryRepository(db)
+	h := &handlers.GalleryHandler{
+		GalleryService: service.NewGalleryService(r),
+	}
+	group.POST("/galleries", h.AddImageToTravel)
+	group.GET("/galleries", h.GetImagesByTravelID)
+	group.DELETE("/galleries/:travelId/:imageId", h.DeleteImageByTravelID)
 }
