@@ -15,9 +15,9 @@ type Gallery struct {
 }
 
 type GalleryInput struct {
-	TravelID uuid.UUID `json:"travel_id"`
-	ImageURL string    `json:"image_url"`
-	Caption  string    `json:"caption"`
+	TravelID uuid.UUID `json:"travel_id" validate:"required"`
+	ImageURL string    `json:"image_url" validate:"required"`
+	Caption  string    `json:"caption" validate:"required"`
 }
 
 type GalleryResponse struct {

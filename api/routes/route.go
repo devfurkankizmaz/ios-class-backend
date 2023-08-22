@@ -16,12 +16,17 @@ func Setup(db *gorm.DB, g *echo.Echo) {
 	NewLoginRouter(db, public)
 	NewRefreshRouter(db, public)
 
+	open := g.Group("/v1")
+	NewPlaceOpenRouter(db, open)
+
 	// All Protected APIs
 	protected := g.Group("/v1", middleware.MiddlewareJWT)
 	NewProfileRouter(db, protected)
 	NewTravelRouter(db, protected)
 	NewAddressRouter(db, protected)
 	NewGalleryRouter(db, protected)
+	NewPlaceProtectedRouter(db, protected)
+
 }
 
 func NewRegisterRouter(db *gorm.DB, group *echo.Group) {
@@ -88,4 +93,23 @@ func NewGalleryRouter(db *gorm.DB, group *echo.Group) {
 	group.POST("/galleries", h.AddImageToTravel)
 	group.GET("/galleries/:travelId", h.GetImagesByTravelID)
 	group.DELETE("/galleries/:travelId/:imageId", h.DeleteImageByTravelID)
+}
+
+func NewPlaceOpenRouter(db *gorm.DB, group *echo.Group) {
+	r := repository.NewPlaceRepository(db)
+	h := &handlers.PlaceHandler{
+		PlaceService: service.NewPlaceService(r),
+	}
+	group.GET("/places", h.FetchAll)
+	group.GET("/places/:placeId", h.FetchByID)
+}
+
+func NewPlaceProtectedRouter(db *gorm.DB, group *echo.Group) {
+	r := repository.NewPlaceRepository(db)
+	h := &handlers.PlaceHandler{
+		PlaceService: service.NewPlaceService(r),
+	}
+	group.POST("/places", h.Create)
+	group.PUT("/places/:placeId", h.UpdateByID)
+	group.DELETE("/places/:placeId", h.DeleteByID)
 }

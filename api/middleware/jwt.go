@@ -22,12 +22,14 @@ func MiddlewareJWT(next echo.HandlerFunc) echo.HandlerFunc {
 			authorized, err := utils.IsAuthorized(authToken, jwtSecret)
 			if authorized {
 				userID, err := utils.ExtractIDFromToken(authToken, jwtSecret)
+				userRole, err := utils.ExtractUserRoleFromToken(authToken, jwtSecret)
 				if err != nil {
 					c.JSON(http.StatusUnauthorized, models.Response{Message: err.Error()})
 					c.Error(echo.ErrUnauthorized)
 					return nil
 				}
 				c.Set("x-user-id", userID)
+				c.Set("x-user-role", userRole)
 				next(c)
 				return nil
 			}

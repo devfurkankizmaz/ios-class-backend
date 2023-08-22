@@ -75,3 +75,24 @@ func ExtractIDFromToken(inputToken string, key string) (string, error) {
 
 	return claims["id"].(string), nil
 }
+
+func ExtractUserRoleFromToken(inputToken string, key string) (string, error) {
+	token, err := jwt.Parse(inputToken, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+		}
+		return []byte(key), nil
+	})
+
+	if err != nil {
+		return "", err
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok && !token.Valid {
+		return "", fmt.Errorf("invalid token")
+	}
+
+	return claims["role"].(string), nil
+}
