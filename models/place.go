@@ -17,7 +17,7 @@ type Place struct {
 }
 
 type PlaceInput struct {
-	Title       string  `json:"location" validate:"required"`
+	Title       string  `json:"title" validate:"required"`
 	Description string  `json:"description"`
 	Latitude    float64 `json:"latitude" validate:"required"`
 	Longitude   float64 `json:"longitude" validate:"required"`
@@ -25,7 +25,7 @@ type PlaceInput struct {
 
 type PlaceResponse struct {
 	ID          *uuid.UUID `json:"id"`
-	Title       string     `json:"location"`
+	Title       string     `json:"title"`
 	Description string     `json:"description"`
 	Latitude    float64    `json:"latitude"`
 	Longitude   float64    `json:"longitude"`

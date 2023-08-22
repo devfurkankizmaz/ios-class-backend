@@ -19,19 +19,20 @@ func (ph *PlaceHandler) Create(c echo.Context) error {
 	validate := validator.New()
 	var payload *models.PlaceInput
 	err := c.Bind(&payload)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
-	}
-	err = validate.Struct(payload)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
-	}
 
 	userRole := c.Get("x-user-role")
 	value := fmt.Sprint(userRole)
 
 	if value != "admin" {
 		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not authorized"})
+	}
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
+	}
+	err = validate.Struct(payload)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
 	}
 
 	newPlace := models.Place{
@@ -111,6 +112,17 @@ func (ph *PlaceHandler) UpdateByID(c echo.Context) error {
 	placeId := c.Param("placeId")
 	var payload *models.PlaceInput
 
+	if placeId == "" {
+		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "param not found"})
+	}
+
+	userRole := c.Get("x-user-role")
+	value := fmt.Sprint(userRole)
+
+	if value != "admin" {
+		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not authorized"})
+	}
+
 	err := c.Bind(&payload)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
@@ -119,17 +131,8 @@ func (ph *PlaceHandler) UpdateByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
 	}
-	if placeId == "" {
-		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "param not found"})
-	}
+
 	cr := time.Now()
-
-	userRole := c.Get("x-user-role")
-	value := fmt.Sprint(userRole)
-
-	if value != "admin" {
-		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not authorized"})
-	}
 
 	updatedPlace := models.Place{
 		Title:       payload.Title,
