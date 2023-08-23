@@ -2,11 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/devfurkankizmaz/iosclass-backend/api/routes"
 	"github.com/devfurkankizmaz/iosclass-backend/configs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"io"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -42,8 +45,13 @@ func HealthCheck(c echo.Context) error {
 }
 
 const BULK_FILE_SIZE = 32 << 20 // 32 MB
+const SPACE_NAME = "iosclass"
+const REGION = "ams3"
+const ACCESS_KEY = "DO00TF3ANW7UMZVKM37V" // DigitalOcean Spaces Access Key
+const SECRET_KEY = "RwjTbIhO/IdFK3mbZP4zdupDLkNhHBr2t6QJ0VuGxdU"
 
 func uploadImages(c echo.Context) error {
+
 	if err := c.Request().ParseMultipartForm(BULK_FILE_SIZE); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"messageType": "E",
@@ -57,48 +65,19 @@ func uploadImages(c echo.Context) error {
 	var httpStatus int
 	var uploadedURLs []string
 
+	sess, _ := session.NewSession(&aws.Config{
+		Credentials: credentials.NewStaticCredentials(ACCESS_KEY, SECRET_KEY, ""),
+		Region:      aws.String(REGION),
+	})
+	uploader := s3.New(sess)
+
+	uploadedURLs = make([]string, 0)
+
 	for _, fileHeader := range files {
-		file, err := fileHeader.Open()
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusInternalServerError
-			break
-		}
-		defer file.Close()
-
-		buff := make([]byte, 512)
-		_, err = file.Read(buff)
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusInternalServerError
-			break
-		}
-
-		fileType := http.DetectContentType(buff)
-		if fileType != "image/jpeg" && fileType != "image/png" && fileType != "image/jpg" {
-			errNew = "The provided file format is not allowed. Please upload a JPEG, JPG, or PNG image"
-			httpStatus = http.StatusBadRequest
-			break
-		}
-
-		_, err = file.Seek(0, io.SeekStart)
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusInternalServerError
-			break
-		}
-
-		err = os.MkdirAll("./uploads", os.ModePerm)
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusInternalServerError
-			break
-		}
-
 		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
 		uploadedFilePath := fmt.Sprintf("./uploads/%s", uploadedFileName)
 
-		f, err := os.Create(uploadedFilePath)
+		f, err := os.Open(uploadedFilePath)
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
@@ -106,17 +85,23 @@ func uploadImages(c echo.Context) error {
 		}
 		defer f.Close()
 
-		_, err = io.Copy(f, file)
+		_, err = uploader.PutObject(&s3.PutObjectInput{
+			Bucket: aws.String(SPACE_NAME),
+			Key:    aws.String(uploadedFileName),
+			ACL:    aws.String("public-read"), // Görüntüyü herkese açık yapmak için
+			Body:   f,
+		})
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
 			break
 		}
 
-		uploadedURL := fmt.Sprintf("https://api.iosclass.live/uploads/%s", uploadedFileName)
+		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/%s", SPACE_NAME, REGION, uploadedFileName)
 		uploadedURLs = append(uploadedURLs, uploadedURL)
 	}
 
+	// Yanıtı oluşturma
 	message := "files uploaded successfully"
 	messageType := "S"
 
