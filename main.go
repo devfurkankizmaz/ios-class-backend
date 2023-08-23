@@ -95,11 +95,21 @@ func uploadImages(c echo.Context) error {
 		}
 		defer file.Close()
 
+		contentType := "application/octet-stream" // Varsayılan olarak binary
+		switch filepath.Ext(fileHeader.Filename) {
+		case ".jpg", ".jpeg":
+			contentType = "image/jpeg"
+		case ".png":
+			contentType = "image/png"
+			// Diğer uzantılar için de benzer şekilde case'ler ekleyebilirsiniz
+		}
+
 		_, err = uploader.PutObject(&s3.PutObjectInput{
-			Bucket: aws.String(SPACE_NAME),
-			Key:    aws.String(uploadedFileName),
-			ACL:    aws.String("public-read"),
-			Body:   file,
+			Bucket:      aws.String(SPACE_NAME),
+			Key:         aws.String(uploadedFileName),
+			ACL:         aws.String("public-read"),
+			Body:        file,
+			ContentType: aws.String(contentType),
 		})
 		if err != nil {
 			errNew = err.Error()
