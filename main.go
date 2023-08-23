@@ -3,12 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io"
-	"log"
-	"net/http"
-	"path/filepath"
-	"time"
-
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -17,6 +11,12 @@ import (
 	"github.com/devfurkankizmaz/iosclass-backend/configs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"io"
+	"log"
+	"math/rand"
+	"net/http"
+	"path/filepath"
+	"time"
 )
 
 const BULK_FILE_SIZE = 32 << 20    // 32 MB
@@ -53,6 +53,16 @@ func HealthCheck(c echo.Context) error {
 	})
 }
 
+func uniqueFilename() string {
+	b := make([]byte, 16)
+	_, err := rand.Read(b)
+	if err != nil {
+		// Rastgele dize oluşturulamadı, alternatif bir yöntem kullanın
+		return fmt.Sprintf("%d", time.Now().UnixNano())
+	}
+	return fmt.Sprintf("%x", b)
+}
+
 func uploadImages(c echo.Context) error {
 	if err := c.Request().ParseMultipartForm(BULK_FILE_SIZE); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -83,7 +93,8 @@ func uploadImages(c echo.Context) error {
 
 	for _, fileHeader := range files {
 		// Dosya adını oluştur
-		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
+
+		uploadedFileName := fmt.Sprintf("%s%s", uniqueFilename(), filepath.Ext(fileHeader.Filename))
 
 		// Multipart formdaki dosyayı bellekte geçici olarak sakla
 		file, _, err := c.Request().FormFile("file")
