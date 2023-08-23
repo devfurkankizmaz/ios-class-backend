@@ -2,6 +2,11 @@ package main
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -10,11 +15,13 @@ import (
 	"github.com/devfurkankizmaz/iosclass-backend/configs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"net/http"
-	"os"
-	"path/filepath"
-	"time"
 )
+
+const BULK_FILE_SIZE = 32 << 20           // 32 MB
+const SPACE_NAME = "uploads"              // Space adınızı burada belirtin
+const REGION = "ams3"                     // AWS bölge adınızı burada belirtin
+const ACCESS_KEY = "DO00TF3ANW7UMZVKM37V" // DigitalOcean Spaces Access Key
+const SECRET_KEY = "RwjTbIhO/IdFK3mbZP4zdupDLkNhHBr2t6QJ0VuGxdU"
 
 func main() {
 	server := echo.New()
@@ -44,14 +51,7 @@ func HealthCheck(c echo.Context) error {
 	})
 }
 
-const BULK_FILE_SIZE = 32 << 20 // 32 MB
-const SPACE_NAME = "iosclass"
-const REGION = "ams3"
-const ACCESS_KEY = "DO00TF3ANW7UMZVKM37V" // DigitalOcean Spaces Access Key
-const SECRET_KEY = "RwjTbIhO/IdFK3mbZP4zdupDLkNhHBr2t6QJ0VuGxdU"
-
 func uploadImages(c echo.Context) error {
-
 	if err := c.Request().ParseMultipartForm(BULK_FILE_SIZE); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"messageType": "E",
