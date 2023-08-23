@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
+	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/aws/aws-sdk-go/aws"
@@ -17,11 +18,9 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-const BULK_FILE_SIZE = 32 << 20    // 32 MB
-const SPACE_NAME = "iosclass"      // Space adınızı burada belirtin
-const REGION = "ams3"              // AWS bölge adınızı burada belirtin
-const key = "DO0078UUPVR4PD78QKWZ" // DigitalOcean Spaces Access Key
-const secret = "xiQW18zzJcHsuVGb8OzgwOuisE0lZT0rxAKqjiVC/vA"
+const BULK_FILE_SIZE = 32 << 20 // 32 MB
+const SPACE_NAME = "iosclass"
+const REGION = "ams3"
 const endpoint = "https://ams3.digitaloceanspaces.com"
 
 func main() {
@@ -53,6 +52,9 @@ func HealthCheck(c echo.Context) error {
 }
 
 func uploadImages(c echo.Context) error {
+	key := os.Getenv("KEY_SPACE")
+	secret := os.Getenv("SECRET_SPACE")
+
 	if err := c.Request().ParseMultipartForm(BULK_FILE_SIZE); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"messageType": "E",
@@ -80,28 +82,32 @@ func uploadImages(c echo.Context) error {
 	uploader := s3.New(sess)
 
 	uploadedURLs = make([]string, 0)
+	allowedExtensions := []string{".jpg", ".jpeg", ".png"}
 
 	for _, fileHeader := range files {
+		ext := filepath.Ext(fileHeader.Filename)
 		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
-
-		//uploadedFilePath := fmt.Sprintf("./uploads/%s", uploadedFileName)
+		lowercaseExt := strings.ToLower(ext)
+		if !stringInSlice(lowercaseExt, allowedExtensions) {
+			errNew = "Invalid file format"
+			httpStatus = http.StatusBadRequest
+			break
+		}
 
 		file, err := fileHeader.Open()
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
-			log.Println("Dosya açma hatası")
 			break
 		}
 		defer file.Close()
 
-		contentType := "application/octet-stream" // Varsayılan olarak binary
+		contentType := "application/octet-stream"
 		switch filepath.Ext(fileHeader.Filename) {
 		case ".jpg", ".jpeg":
 			contentType = "image/jpeg"
 		case ".png":
 			contentType = "image/png"
-			// Diğer uzantılar için de benzer şekilde case'ler ekleyebilirsiniz
 		}
 
 		_, err = uploader.PutObject(&s3.PutObjectInput{
@@ -114,7 +120,6 @@ func uploadImages(c echo.Context) error {
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
-			log.Println("Dosya yükleme hatası")
 			break
 		}
 
@@ -141,4 +146,13 @@ func uploadImages(c echo.Context) error {
 		"urls":        uploadedURLs,
 	}
 	return c.JSON(httpStatus, resp)
+}
+
+func stringInSlice(str string, list []string) bool {
+	for _, v := range list {
+		if v == str {
+			return true
+		}
+	}
+	return false
 }
