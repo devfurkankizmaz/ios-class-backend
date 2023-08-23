@@ -65,11 +65,23 @@ func uploadImages(c echo.Context) error {
 	var httpStatus int
 	var uploadedURLs []string
 
-	sess, _ := session.NewSession(&aws.Config{
-		Credentials: credentials.NewStaticCredentials(ACCESS_KEY, SECRET_KEY, ""),
+	sess, err := session.NewSession(&aws.Config{
+		Credentials: credentials.NewStaticCredentials(ACCESS_KEY, SECRET_KEY, "ACCESS_KEY"),
 		Region:      aws.String(REGION),
 	})
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"messageType": "E",
+			"message":     err.Error(),
+		})
+	}
 	uploader := s3.New(sess)
+
+	if uploader != nil {
+		fmt.Println("Uploader initialized successfully")
+	} else {
+		fmt.Println("Uploader initialization failed")
+	}
 
 	uploadedURLs = make([]string, 0)
 
