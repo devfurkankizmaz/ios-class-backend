@@ -3,6 +3,12 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"path/filepath"
+	"time"
+
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -11,17 +17,11 @@ import (
 	"github.com/devfurkankizmaz/iosclass-backend/configs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"io"
-	"log"
-	"math/rand"
-	"net/http"
-	"path/filepath"
-	"time"
 )
 
-const SPACE_NAME = "iosclass"
-const REGION = "ams3"
 const BULK_FILE_SIZE = 32 << 20    // 32 MB
+const SPACE_NAME = "iosclass"      // Space adınızı burada belirtin
+const REGION = "ams3"              // AWS bölge adınızı burada belirtin
 const key = "DO0078UUPVR4PD78QKWZ" // DigitalOcean Spaces Access Key
 const secret = "xiQW18zzJcHsuVGb8OzgwOuisE0lZT0rxAKqjiVC/vA"
 const endpoint = "https://iosclass.ams3.digitaloceanspaces.com"
@@ -54,16 +54,6 @@ func HealthCheck(c echo.Context) error {
 	})
 }
 
-func uniqueFilename() string {
-	b := make([]byte, 16)
-	_, err := rand.Read(b)
-	if err != nil {
-		// Rastgele dize oluşturulamadı, alternatif bir yöntem kullanın
-		return fmt.Sprintf("%d", time.Now().UnixNano())
-	}
-	return fmt.Sprintf("%x", b)
-}
-
 func uploadImages(c echo.Context) error {
 	if err := c.Request().ParseMultipartForm(BULK_FILE_SIZE); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -80,7 +70,8 @@ func uploadImages(c echo.Context) error {
 
 	sess, err := session.NewSession(&aws.Config{
 		Credentials: credentials.NewStaticCredentials(key, secret, ""),
-		Endpoint:    aws.String(endpoint),
+		Endpoint:    aws.String(endpoint), // DigitalOcean Spaces endpoint
+		Region:      aws.String(REGION),
 	})
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -94,8 +85,7 @@ func uploadImages(c echo.Context) error {
 
 	for _, fileHeader := range files {
 		// Dosya adını oluştur
-
-		uploadedFileName := fmt.Sprintf("%s%s", uniqueFilename(), filepath.Ext(fileHeader.Filename))
+		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
 
 		// Multipart formdaki dosyayı bellekte geçici olarak sakla
 		file, _, err := c.Request().FormFile("file")
