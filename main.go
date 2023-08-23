@@ -1,9 +1,11 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io"
+	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 	"time"
 
@@ -82,34 +84,43 @@ func uploadImages(c echo.Context) error {
 	uploadedURLs = make([]string, 0)
 
 	for _, fileHeader := range files {
+		// Dosya adını oluştur
 		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
-		uploadedFilePath := fmt.Sprintf("./uploads/%s", uploadedFileName)
 
-		// Dosyayı diskte oluştur
-		f, err := os.Create(uploadedFilePath)
+		// Multipart formdaki dosyayı bellekte geçici olarak sakla
+		file, _, err := c.Request().FormFile("file")
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
+			log.Println("Dosya kopyalama hatası")
 			break
 		}
-		defer f.Close()
+		defer file.Close()
 
-		// ... (Dosyayı oluşturduktan sonra gerekli işlemleri yapabilirsiniz)
+		buf := new(bytes.Buffer)
+		_, err = io.Copy(buf, file)
+		if err != nil {
+			errNew = err.Error()
+			httpStatus = http.StatusBadRequest
+			log.Println("Dosya kopyalama hatası")
+			break
+		}
 
 		// Dosyayı Spaces'e yükle
 		_, err = uploader.PutObject(&s3.PutObjectInput{
 			Bucket: aws.String(SPACE_NAME),
 			Key:    aws.String(uploadedFileName),
 			ACL:    aws.String("public-read"),
-			Body:   f,
+			Body:   bytes.NewReader(buf.Bytes()), // Bellekteki dosyanın içeriğini yükle
 		})
 		if err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
+			log.Println("Dosya yükleme hatası")
 			break
 		}
 
-		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/%s", SPACE_NAME, REGION, uploadedFileName)
+		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/uploads/%s", SPACE_NAME, REGION, uploadedFileName)
 		uploadedURLs = append(uploadedURLs, uploadedURL)
 	}
 
