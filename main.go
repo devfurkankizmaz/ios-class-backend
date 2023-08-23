@@ -18,7 +18,7 @@ import (
 )
 
 const BULK_FILE_SIZE = 32 << 20           // 32 MB
-const SPACE_NAME = "uploads"              // Space adınızı burada belirtin
+const SPACE_NAME = "iosclass"             // Space adınızı burada belirtin
 const REGION = "ams3"                     // AWS bölge adınızı burada belirtin
 const ACCESS_KEY = "DO00TF3ANW7UMZVKM37V" // DigitalOcean Spaces Access Key
 const SECRET_KEY = "RwjTbIhO/IdFK3mbZP4zdupDLkNhHBr2t6QJ0VuGxdU"
