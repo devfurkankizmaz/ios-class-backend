@@ -24,7 +24,6 @@ const SPACE_NAME = "iosclass"      // Space adınızı burada belirtin
 const REGION = "ams3"              // AWS bölge adınızı burada belirtin
 const key = "DO0078UUPVR4PD78QKWZ" // DigitalOcean Spaces Access Key
 const secret = "xiQW18zzJcHsuVGb8OzgwOuisE0lZT0rxAKqjiVC/vA"
-const endpoint = "https://iosclass.ams3.digitaloceanspaces.com"
 
 func main() {
 	server := echo.New()
@@ -70,7 +69,6 @@ func uploadImages(c echo.Context) error {
 
 	sess, err := session.NewSession(&aws.Config{
 		Credentials: credentials.NewStaticCredentials(key, secret, ""),
-		Endpoint:    aws.String(endpoint),
 		Region:      aws.String(REGION),
 	})
 	if err != nil {
@@ -121,6 +119,7 @@ func uploadImages(c echo.Context) error {
 		}
 
 		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/uploads/%s", SPACE_NAME, REGION, uploadedFileName)
+
 		uploadedURLs = append(uploadedURLs, uploadedURL)
 	}
 
