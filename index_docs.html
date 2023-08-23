@@ -27,6 +27,7 @@
 <li><a href="#register-user">Register User</a></li>
 <li><a href="#user-login">User Login</a></li>
 <li><a href="#refresh-token">Refresh Token</a></li>
+	<li><a href="#upload">Upload Image</a></li>
 </ul>
 </li>
 <li><a href="#protected-routes">Protected Routes</a>
@@ -101,6 +102,29 @@
 	<span class="token string">"accessToken"</span><span class="token punctuation">:</span> <span class="token string">"new_access_token"</span><span class="token punctuation">,</span>  
 	<span class="token string">"refreshToken"</span><span class="token punctuation">:</span> <span class="token string">"new_refresh_token"</span>  
 <span class="token punctuation">}</span>  
+</code></pre>
+		<h2 id="upload">Upload Image</h2>
+		<p>Upload image with multipart form data.<br>
+		<p><strong>Request:</strong></p>
+			<strong>Endpoint:</strong> <code>POST /upload</code></p>
+
+
+		<p><strong> Request Headers</strong></p>
+		<p>Content-Type: `multipart/form-data`</p>
+		<p><strong> Request Body</strong></p>
+		<p>"file": The image file to be uploaded (allowed extensions: `.jpg`, `.jpeg`, `.png`)</p>
+
+
+		</code></pre>
+		<p><strong>Response:</strong></p>
+		<pre class="language-json"><code class="prism language-json">{
+  "messageType": "S",
+  "message": "Files uploaded successfully",
+  "urls": [
+    "https://iosclass.ams3.digitaloceanspaces.com/1631234567890.jpg",
+    "https://iosclass.ams3.digitaloceanspaces.com/1631234567891.jpg"
+  ]
+}
 </code></pre>
 <h1 id="protected-routes">Protected Routes</h1>
 <p>Note: For protected routes, include the Authorization header with the value Bearer &lt;access_token&gt;.</p>

@@ -127,7 +127,6 @@ func uploadImages(c echo.Context) error {
 		uploadedURLs = append(uploadedURLs, uploadedURL)
 	}
 
-	// Yanıtı oluşturma
 	message := "files uploaded successfully"
 	messageType := "S"
 
