@@ -22,7 +22,7 @@ const SPACE_NAME = "iosclass"      // Space adınızı burada belirtin
 const REGION = "ams3"              // AWS bölge adınızı burada belirtin
 const key = "DO0078UUPVR4PD78QKWZ" // DigitalOcean Spaces Access Key
 const secret = "xiQW18zzJcHsuVGb8OzgwOuisE0lZT0rxAKqjiVC/vA"
-const endpoint = "https://iosclass.ams3.digitaloceanspaces.com"
+const endpoint = "https://ams3.digitaloceanspaces.com"
 
 func main() {
 	server := echo.New()
@@ -83,6 +83,7 @@ func uploadImages(c echo.Context) error {
 
 	for _, fileHeader := range files {
 		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
+
 		//uploadedFilePath := fmt.Sprintf("./uploads/%s", uploadedFileName)
 
 		file, err := fileHeader.Open()
