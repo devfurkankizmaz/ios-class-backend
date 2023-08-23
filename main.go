@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -91,23 +92,26 @@ func uploadImages(c echo.Context) error {
 
 		f, err := os.Open(uploadedFilePath)
 		if err != nil {
+			log.Println("Failed to open file")
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
 			break
 		}
-		defer f.Close()
 
 		_, err = uploader.PutObject(&s3.PutObjectInput{
 			Bucket: aws.String(SPACE_NAME),
 			Key:    aws.String(uploadedFileName),
-			ACL:    aws.String("public-read"), // Görüntüyü herkese açık yapmak için
+			ACL:    aws.String("public-read"),
 			Body:   f,
 		})
 		if err != nil {
+			f.Close() // Dosyayı burada kapatın
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
 			break
 		}
+
+		f.Close() // Dosyayı burada kapatın
 
 		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/%s", SPACE_NAME, REGION, uploadedFileName)
 		uploadedURLs = append(uploadedURLs, uploadedURL)
