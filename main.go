@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -18,11 +17,12 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
-const BULK_FILE_SIZE = 32 << 20           // 32 MB
-const SPACE_NAME = "iosclass"             // Space adınızı burada belirtin
-const REGION = "ams3"                     // AWS bölge adınızı burada belirtin
-const ACCESS_KEY = "DO00TF3ANW7UMZVKM37V" // DigitalOcean Spaces Access Key
-const SECRET_KEY = "RwjTbIhO/IdFK3mbZP4zdupDLkNhHBr2t6QJ0VuGxdU"
+const BULK_FILE_SIZE = 32 << 20    // 32 MB
+const SPACE_NAME = "iosclass"      // Space adınızı burada belirtin
+const REGION = "ams3"              // AWS bölge adınızı burada belirtin
+const key = "DO0078UUPVR4PD78QKWZ" // DigitalOcean Spaces Access Key
+const secret = "xiQW18zzJcHsuVGb8OzgwOuisE0lZT0rxAKqjiVC/vA"
+const endpoint = "https://iosclass.ams3.digitaloceanspaces.com"
 
 func main() {
 	server := echo.New()
@@ -67,7 +67,8 @@ func uploadImages(c echo.Context) error {
 	var uploadedURLs []string
 
 	sess, err := session.NewSession(&aws.Config{
-		Credentials: credentials.NewStaticCredentials(ACCESS_KEY, SECRET_KEY, "ACCESS_KEY"),
+		Credentials: credentials.NewStaticCredentials(key, secret, ""),
+		Endpoint:    aws.String(endpoint),
 		Region:      aws.String(REGION),
 	})
 	if err != nil {
@@ -78,26 +79,24 @@ func uploadImages(c echo.Context) error {
 	}
 	uploader := s3.New(sess)
 
-	if uploader != nil {
-		fmt.Println("Uploader initialized successfully")
-	} else {
-		fmt.Println("Uploader initialization failed")
-	}
-
 	uploadedURLs = make([]string, 0)
 
 	for _, fileHeader := range files {
 		uploadedFileName := fmt.Sprintf("%d%s", time.Now().UnixNano(), filepath.Ext(fileHeader.Filename))
 		uploadedFilePath := fmt.Sprintf("./uploads/%s", uploadedFileName)
 
-		f, err := os.Open(uploadedFilePath)
+		// Dosyayı diskte oluştur
+		f, err := os.Create(uploadedFilePath)
 		if err != nil {
-			log.Println("Failed to open file")
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
 			break
 		}
+		defer f.Close()
 
+		// ... (Dosyayı oluşturduktan sonra gerekli işlemleri yapabilirsiniz)
+
+		// Dosyayı Spaces'e yükle
 		_, err = uploader.PutObject(&s3.PutObjectInput{
 			Bucket: aws.String(SPACE_NAME),
 			Key:    aws.String(uploadedFileName),
@@ -105,13 +104,10 @@ func uploadImages(c echo.Context) error {
 			Body:   f,
 		})
 		if err != nil {
-			f.Close() // Dosyayı burada kapatın
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
 			break
 		}
-
-		f.Close() // Dosyayı burada kapatın
 
 		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/%s", SPACE_NAME, REGION, uploadedFileName)
 		uploadedURLs = append(uploadedURLs, uploadedURL)
