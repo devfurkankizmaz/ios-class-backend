@@ -20,14 +20,14 @@ func NewDBConnection() *gorm.DB {
 	}
 
 	// Drop and re-create the Address table with new fields
-	//err = DB.Migrator().DropTable(&models.Address{})
-	err = DB.Migrator().DropTable(&models.Place{})
+
+	err = DB.Migrator().DropTable(&models.Gallery{})
 	if err != nil {
 		log.Fatal("Migration Failed:  \n", err.Error())
 		os.Exit(1)
 	}
 
-	err = DB.AutoMigrate(&models.Place{})
+	err = DB.AutoMigrate(&models.Gallery{})
 
 	if err != nil {
 		log.Fatal("Migration Failed:  \n", err.Error())
@@ -35,12 +35,12 @@ func NewDBConnection() *gorm.DB {
 	}
 
 	query := `
-        ALTER TABLE places
-        ADD CONSTRAINT fk_user
-        FOREIGN KEY (UserID)
-        REFERENCES users (ID)
-        ON DELETE CASCADE;
-    `
+		        ALTER TABLE Galleries
+				ADD CONSTRAINT fk_place
+				FOREIGN KEY (place_id)
+				REFERENCES Places (ID)
+				ON DELETE CASCADE;
+		    `
 
 	//	query2 := `ALTER TABLE users
 	//         ADD CONSTRAINT fk_user_travels FOREIGN KEY (user_id) REFERENCES travels(id) ON DELETE CASCADE;`

@@ -22,17 +22,17 @@ func (gr *galleryRepository) Create(gallery *models.Gallery) error {
 	return nil
 }
 
-func (gr *galleryRepository) FetchAllByTravelID(travelID string) ([]models.Gallery, error) {
+func (gr *galleryRepository) FetchAllByPlaceID(placeID string) ([]models.Gallery, error) {
 	var galleryImages = []models.Gallery{}
-	result := gr.db.Where("travel_id = ?", travelID).Find(&galleryImages)
+	result := gr.db.Where("place_id = ?", placeID).Find(&galleryImages)
 	if result.Error != nil {
 		return galleryImages, result.Error
 	}
 	return galleryImages, nil
 }
 
-func (gr *galleryRepository) DeleteImageByTravelID(travelID, imageID string) error {
-	result := gr.db.Delete(&models.Gallery{}, "travel_id = ? AND id = ?", travelID, imageID)
+func (gr *galleryRepository) DeleteImageByPlaceID(placeID, imageID string) error {
+	result := gr.db.Delete(&models.Gallery{}, "place_id = ? AND id = ?", placeID, imageID)
 	if result.RowsAffected == 0 {
 		return result.Error
 	} else if result.Error != nil {

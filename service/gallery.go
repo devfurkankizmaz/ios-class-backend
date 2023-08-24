@@ -15,8 +15,8 @@ func NewGalleryService(repo models.GalleryRepository) models.GalleryService {
 
 func (gs *galleryService) Create(gallery *models.Gallery) error {
 
-	stringUuid := (gallery.TravelID).String()
-	existingImages, err := gs.galleryRepository.FetchAllByTravelID(stringUuid)
+	stringUuid := (gallery.PlaceID).String()
+	existingImages, err := gs.galleryRepository.FetchAllByPlaceID(stringUuid)
 	if err != nil {
 		return err
 	}
@@ -32,16 +32,16 @@ func (gs *galleryService) Create(gallery *models.Gallery) error {
 	return nil
 }
 
-func (gs *galleryService) FetchAllByTravelID(travelID string) ([]models.Gallery, error) {
-	galleryImages, err := gs.galleryRepository.FetchAllByTravelID(travelID)
+func (gs *galleryService) FetchAllByPlaceID(placeID string) ([]models.Gallery, error) {
+	galleryImages, err := gs.galleryRepository.FetchAllByPlaceID(placeID)
 	if err != nil {
 		return galleryImages, err
 	}
 	return galleryImages, nil
 }
 
-func (gs *galleryService) DeleteImageByTravelID(travelID, imageID string) error {
-	err := gs.galleryRepository.DeleteImageByTravelID(travelID, imageID)
+func (gs *galleryService) DeleteImageByPlaceID(placeID, imageID string) error {
+	err := gs.galleryRepository.DeleteImageByPlaceID(placeID, imageID)
 	if err != nil {
 		return err
 	}
