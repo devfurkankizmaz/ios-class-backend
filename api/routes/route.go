@@ -15,7 +15,7 @@ func Setup(db *gorm.DB, g *echo.Echo) {
 	NewRegisterRouter(db, public)
 	NewLoginRouter(db, public)
 	NewRefreshRouter(db, public)
-
+	NewGalleryOpenRouter(db, public)
 	open := g.Group("/v1")
 	NewPlaceOpenRouter(db, open)
 
@@ -91,8 +91,15 @@ func NewGalleryRouter(db *gorm.DB, group *echo.Group) {
 		GalleryService: service.NewGalleryService(r),
 	}
 	group.POST("/galleries", h.AddImageToTravel)
+	group.DELETE("/galleries/:placeId/:imageId", h.DeleteImageByPlaceID)
+}
+
+func NewGalleryOpenRouter(db *gorm.DB, group *echo.Group) {
+	r := repository.NewGalleryRepository(db)
+	h := &handlers.GalleryHandler{
+		GalleryService: service.NewGalleryService(r),
+	}
 	group.GET("/galleries/:placeId", h.GetImagesByPlaceID)
-	group.DELETE("/galleries/:travelId/:placeId", h.DeleteImageByPlaceID)
 }
 
 func NewPlaceOpenRouter(db *gorm.DB, group *echo.Group) {
