@@ -23,10 +23,10 @@ func Setup(db *gorm.DB, g *echo.Echo) {
 	// All Protected APIs
 	protected := g.Group("/v1", middleware.MiddlewareJWT)
 	NewProfileRouter(db, protected)
-	NewTravelRouter(db, protected)
 	NewAddressRouter(db, protected)
 	NewGalleryRouter(db, protected)
 	NewPlaceProtectedRouter(db, protected)
+	NewVisitRouter(db, protected)
 
 }
 
@@ -62,16 +62,15 @@ func NewProfileRouter(db *gorm.DB, group *echo.Group) {
 	group.GET("/me", h.Fetch)
 }
 
-func NewTravelRouter(db *gorm.DB, group *echo.Group) {
-	r := repository.NewTravelRepository(db)
-	h := &handlers.TravelHandler{
-		TravelService: service.NewTravelService(r),
+func NewVisitRouter(db *gorm.DB, group *echo.Group) {
+	r := repository.NewVisitRepository(db)
+	h := &handlers.VisitHandler{
+		VisitService: service.NewVisitService(r),
 	}
-	group.POST("/travels", h.Create)
-	group.GET("/travels", h.FetchAllByUserID)
-	group.GET("/travels/:travelId", h.FetchByID)
-	group.PUT("/travels/:travelId", h.UpdateByID)
-	group.DELETE("/travels/:travelId", h.DeleteByID)
+	group.POST("/visits", h.Create)
+	group.GET("/visits", h.FetchAllByUserID)
+	group.GET("/visits/:visitId", h.FetchByID)
+	group.DELETE("/visits/:visitId", h.DeleteByID)
 }
 
 func NewAddressRouter(db *gorm.DB, group *echo.Group) {
@@ -117,6 +116,7 @@ func NewPlaceProtectedRouter(db *gorm.DB, group *echo.Group) {
 	h := &handlers.PlaceHandler{
 		PlaceService: service.NewPlaceService(r),
 	}
+	group.GET("/places/user", h.FetchAllByUserID)
 	group.POST("/places", h.Create)
 	group.PUT("/places/:placeId", h.UpdateByID)
 	group.DELETE("/places/:placeId", h.DeleteByID)

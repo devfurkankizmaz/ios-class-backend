@@ -45,6 +45,7 @@ type PlaceResponse struct {
 type PlaceRepository interface {
 	Create(place *Place) error
 	FetchAll(limit int, offset int) ([]Place, error)
+	FetchAllByUserID(id string, limit int, offset int) ([]Place, error)
 	FetchByID(id string) (Place, error)
 	UpdateByID(place *Place, id string) error
 	DeleteByID(id string) error
@@ -53,6 +54,7 @@ type PlaceRepository interface {
 type PlaceService interface {
 	Create(place *Place) error
 	FetchAll(limit int, page int) ([]Place, error)
+	FetchAllByUserID(id string, limit int, offset int) ([]Place, error)
 	FetchByID(id string) (Place, error)
 	UpdateByID(place *Place, id string) error
 	DeleteByID(id string) error

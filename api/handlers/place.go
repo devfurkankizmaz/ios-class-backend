@@ -169,6 +169,46 @@ func (ph *PlaceHandler) UpdateByID(c echo.Context) error {
 	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "Place successfully updated"})
 }
 
+func (ph *PlaceHandler) FetchAllByUserID(c echo.Context) error {
+	newUID := fmt.Sprint(c.Get("x-user-id"))
+	limitParam := c.QueryParam("limit")
+	pageParam := c.QueryParam("page")
+
+	limit := 100
+	if limitParam != "" {
+		limit, _ = strconv.Atoi(limitParam)
+	}
+
+	page := 1
+	if pageParam != "" {
+		page, _ = strconv.Atoi(pageParam)
+	}
+
+	places, err := ph.PlaceService.FetchAllByUserID(newUID, limit, page)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+
+	response := make([]models.PlaceResponse, len(places))
+
+	for k, v := range places {
+		response[k] = models.PlaceResponse{
+			ID:            v.ID,
+			Creator:       v.Creator,
+			Place:         v.Place,
+			Title:         v.Title,
+			Description:   v.Description,
+			CoverImageUrl: v.CoverImageUrl,
+			Latitude:      v.Latitude,
+			Longitude:     v.Longitude,
+			CreatedAt:     v.CreatedAt,
+			UpdatedAt:     v.UpdatedAt,
+		}
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"count": len(places), "places": response}})
+}
+
 func (ph *PlaceHandler) DeleteByID(c echo.Context) error {
 	placeId := c.Param("placeId")
 	if placeId == "" {

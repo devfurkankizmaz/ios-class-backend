@@ -26,6 +26,15 @@ func (ps *placeService) Create(place *models.Place) error {
 	return nil
 }
 
+func (ps *placeService) FetchAllByUserID(id string, limit int, page int) ([]models.Place, error) {
+	offset := (page - 1) * page
+	places, err := ps.placeRepository.FetchAllByUserID(id, limit, offset)
+	if err != nil {
+		return places, err
+	}
+	return places, nil
+}
+
 func (ps *placeService) FetchAll(limit int, page int) ([]models.Place, error) {
 	offset := (page - 1) * page
 	places, err := ps.placeRepository.FetchAll(limit, offset)
