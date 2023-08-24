@@ -35,10 +35,10 @@ func NewDBConnection() *gorm.DB {
 	}
 
 	query := `
-		        ALTER TABLE Galleries
+		        ALTER TABLE galleries
 				ADD CONSTRAINT fk_place
 				FOREIGN KEY (place_id)
-				REFERENCES Places (ID)
+				REFERENCES places (ID)
 				ON DELETE CASCADE;
 		    `
 
