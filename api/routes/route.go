@@ -15,9 +15,10 @@ func Setup(db *gorm.DB, g *echo.Echo) {
 	NewRegisterRouter(db, public)
 	NewLoginRouter(db, public)
 	NewRefreshRouter(db, public)
-	NewGalleryOpenRouter(db, public)
+
 	open := g.Group("/v1")
 	NewPlaceOpenRouter(db, open)
+	NewGalleryOpenRouter(db, open)
 
 	// All Protected APIs
 	protected := g.Group("/v1", middleware.MiddlewareJWT)
