@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/google/uuid"
 	"net/http"
 	"strconv"
 	"time"
@@ -20,13 +21,6 @@ func (ph *PlaceHandler) Create(c echo.Context) error {
 	var payload *models.PlaceInput
 	err := c.Bind(&payload)
 
-	userRole := c.Get("x-user-role")
-	value := fmt.Sprint(userRole)
-
-	if value != "admin" {
-		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not authorized"})
-	}
-
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
 	}
@@ -35,11 +29,22 @@ func (ph *PlaceHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
 	}
 
+	userID := c.Get("x-user-id")
+	value := fmt.Sprint(userID)
+	UID, _ := uuid.Parse(value)
+
+	userFullName := c.Get("x-user-full-name")
+	fullName := fmt.Sprint(userFullName)
+
 	newPlace := models.Place{
-		Title:       payload.Title,
-		Description: payload.Description,
-		Latitude:    payload.Latitude,
-		Longitude:   payload.Longitude,
+		UserID:        UID,
+		Creator:       fullName,
+		Place:         payload.Place,
+		Title:         payload.Title,
+		Description:   payload.Description,
+		Latitude:      payload.Latitude,
+		Longitude:     payload.Longitude,
+		CoverImageUrl: payload.CoverImageUrl,
 	}
 
 	err = ph.PlaceService.Create(&newPlace)
@@ -73,13 +78,16 @@ func (ph *PlaceHandler) FetchAll(c echo.Context) error {
 
 	for k, v := range places {
 		response[k] = models.PlaceResponse{
-			ID:          v.ID,
-			Title:       v.Title,
-			Description: v.Description,
-			Latitude:    v.Latitude,
-			Longitude:   v.Longitude,
-			CreatedAt:   v.CreatedAt,
-			UpdatedAt:   v.UpdatedAt,
+			ID:            v.ID,
+			Creator:       v.Creator,
+			Place:         v.Place,
+			Title:         v.Title,
+			Description:   v.Description,
+			Latitude:      v.Latitude,
+			Longitude:     v.Longitude,
+			CoverImageUrl: v.CoverImageUrl,
+			CreatedAt:     v.CreatedAt,
+			UpdatedAt:     v.UpdatedAt,
 		}
 	}
 
@@ -96,13 +104,16 @@ func (ph *PlaceHandler) FetchByID(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
 	response := models.PlaceResponse{
-		ID:          place.ID,
-		Title:       place.Title,
-		Description: place.Description,
-		Latitude:    place.Latitude,
-		Longitude:   place.Longitude,
-		CreatedAt:   place.CreatedAt,
-		UpdatedAt:   place.UpdatedAt,
+		ID:            place.ID,
+		Creator:       place.Creator,
+		Place:         place.Place,
+		Title:         place.Title,
+		Description:   place.Description,
+		Latitude:      place.Latitude,
+		Longitude:     place.Longitude,
+		CoverImageUrl: place.CoverImageUrl,
+		CreatedAt:     place.CreatedAt,
+		UpdatedAt:     place.UpdatedAt,
 	}
 	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"place": response}})
 }
@@ -116,14 +127,20 @@ func (ph *PlaceHandler) UpdateByID(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "param not found"})
 	}
 
-	userRole := c.Get("x-user-role")
-	value := fmt.Sprint(userRole)
+	userID := c.Get("x-user-id")
+	value := fmt.Sprint(userID)
+	UID, _ := uuid.Parse(value)
 
-	if value != "admin" {
-		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not authorized"})
+	place, err := ph.PlaceService.FetchByID(placeId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
 
-	err := c.Bind(&payload)
+	if place.UserID != UID {
+		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not creator of this place"})
+	}
+
+	err = c.Bind(&payload)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": err.Error()})
 	}
@@ -135,11 +152,13 @@ func (ph *PlaceHandler) UpdateByID(c echo.Context) error {
 	cr := time.Now()
 
 	updatedPlace := models.Place{
-		Title:       payload.Title,
-		Description: payload.Description,
-		Latitude:    payload.Latitude,
-		Longitude:   payload.Longitude,
-		UpdatedAt:   &cr,
+		Place:         payload.Place,
+		Title:         payload.Title,
+		Description:   payload.Description,
+		Latitude:      payload.Latitude,
+		Longitude:     payload.Longitude,
+		CoverImageUrl: payload.CoverImageUrl,
+		UpdatedAt:     &cr,
 	}
 
 	err = ph.PlaceService.UpdateByID(&updatedPlace, placeId)
@@ -156,14 +175,19 @@ func (ph *PlaceHandler) DeleteByID(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "param not found"})
 	}
 
-	userRole := c.Get("x-user-role")
-	value := fmt.Sprint(userRole)
+	userID := c.Get("x-user-id")
+	value := fmt.Sprint(userID)
+	UID, _ := uuid.Parse(value)
 
-	if value != "admin" {
-		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not authorized"})
+	place, err := ph.PlaceService.FetchByID(placeId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+	if place.UserID != UID {
+		return c.JSON(http.StatusUnauthorized, echo.Map{"status": "fail", "message": "You are not creator of this place"})
 	}
 
-	err := ph.PlaceService.DeleteByID(placeId)
+	err = ph.PlaceService.DeleteByID(placeId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}

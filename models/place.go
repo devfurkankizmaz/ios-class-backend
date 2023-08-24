@@ -7,30 +7,39 @@ import (
 )
 
 type Place struct {
-	ID          *uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
-	Title       string     `gorm:"type:varchar(255);not null"`
-	Description string     `gorm:"type:text"`
-	Latitude    float64    `gorm:"type:float;not null"`
-	Longitude   float64    `gorm:"type:float;not null"`
-	CreatedAt   *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
-	UpdatedAt   *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
+	ID            *uuid.UUID `gorm:"type:uuid;default:uuid_generate_v4();primary_key"`
+	UserID        uuid.UUID  `gorm:"type:uuid;not null"`
+	Creator       string     `gorm:"type:varchar(255);not null"`
+	Place         string     `gorm:"type:varchar(255);not null"`
+	Title         string     `gorm:"type:varchar(255);not null"`
+	Description   string     `gorm:"type:text"`
+	Latitude      float64    `gorm:"type:float;not null"`
+	Longitude     float64    `gorm:"type:float;not null"`
+	CoverImageUrl string     `gorm:"type:varchar(255)"`
+	CreatedAt     *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
+	UpdatedAt     *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 }
 
 type PlaceInput struct {
-	Title       string  `json:"title" validate:"required"`
-	Description string  `json:"description"`
-	Latitude    float64 `json:"latitude" validate:"required"`
-	Longitude   float64 `json:"longitude" validate:"required"`
+	Place         string  `json:"place" validate:"required"`
+	Title         string  `json:"title" validate:"required"`
+	Description   string  `json:"description"`
+	Latitude      float64 `json:"latitude" validate:"required"`
+	Longitude     float64 `json:"longitude" validate:"required"`
+	CoverImageUrl string  `json:"cover_image_url"`
 }
 
 type PlaceResponse struct {
-	ID          *uuid.UUID `json:"id"`
-	Title       string     `json:"title"`
-	Description string     `json:"description"`
-	Latitude    float64    `json:"latitude"`
-	Longitude   float64    `json:"longitude"`
-	CreatedAt   *time.Time `json:"created_at"`
-	UpdatedAt   *time.Time `json:"updated_at"`
+	ID            *uuid.UUID `json:"id"`
+	Creator       string     `json:"creator"`
+	Place         string     `json:"place"`
+	Title         string     `json:"title"`
+	Description   string     `json:"description"`
+	CoverImageUrl string     `json:"cover_image_url"`
+	Latitude      float64    `json:"latitude"`
+	Longitude     float64    `json:"longitude"`
+	CreatedAt     *time.Time `json:"created_at"`
+	UpdatedAt     *time.Time `json:"updated_at"`
 }
 
 type PlaceRepository interface {

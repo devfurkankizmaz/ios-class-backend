@@ -42,7 +42,7 @@ func (pr *placeRepository) FetchByID(id string) (models.Place, error) {
 }
 
 func (pr *placeRepository) UpdateByID(place *models.Place, id string) error {
-	columbs := map[string]interface{}{"title": place.Title, "description": place.Description, "latitude": place.Latitude, "longitude": place.Longitude}
+	columbs := map[string]interface{}{"place": place.Place, "title": place.Title, "description": place.Description, "cover_image_url": place.CoverImageUrl, "latitude": place.Latitude, "longitude": place.Longitude}
 	result := pr.db.Model(&place).Where("id = ?", id).Updates(columbs)
 
 	if result.Error != nil {
