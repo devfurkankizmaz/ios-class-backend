@@ -1,397 +1,400 @@
-# API Documentation
+# Travio API Documentation
 
-Welcome to the API documentation for our service. This API allows you to manage addresses and travel information, as well as user authentication.
+Welcome to the API documentation for **Travio App** Service. This API allows you to manage places, galleries, visits and addresses information, as well as user authentication.
 
-# Public Routes
-
-## Register User
-
-Register a new user.  
+# Auth & Upload
+## Sign Up
+Register New User
 **Endpoint:** `POST /v1/auth/register`
 
-**Request:**
-
-    {  
-    	"full_name": "John Doe",  
-    	"email": "johndoe@example.com",  
-    	"password": "secretpassword"  
-    }  
-
-**Response:**
-
-    {  
-    	"message": "You're registered successfully.",
-    	"status": "success"  
-    }  
-
-## User Login
-
-Authenticate and login user.  
+**Request**
+```  
+{  
+	"full_name": "John Doe",  
+	"email": "johndoe@example.com",  
+	"password": "secretpassword"  
+}
+```
+**Response**
+```  
+{  
+	"message": "You're registered successfully.",  
+	"status": "success"  
+}
+```
+## Login
+Authenticate and login user.
 **Endpoint:** `POST /v1/auth/login`
 
-**Request:**
-
-    {  
-    	"email": "johndoe@example.com",  
-    	"password": "secretpassword"  
-    }  
-
-**Response:**
-
-    {  
-    	"accessToken": "access_token",  
-    	"refreshToken": "refresh_token"  
-    }  
-
-## Refresh Token
-
-Refresh user access token.  
+**Request**
+```  
+{
+	"email":  "johndoe@example.com",
+	"password":  "secretpassword"  
+}
+```
+**Response**
+```  
+{
+	"accessToken":  "access_token",
+	"refreshToken":  "refresh_token"  
+}
+```
+## Refresh
+Refresh user access token.
 **Endpoint:** `POST /v1/auth/refresh`
 
-**Request:**
+**Request**
+```  
+{
+	"refresh_token":  "refresh_token_here"  
+}
+```
+**Response**
+```
+{
+	"accessToken":  "access_token",
+	"refreshToken":  "refresh_token"  
+}
+```
+## Upload
+Upload image with multipart form data.
+**Endpoint:** `POST /upload`
+**Content-Type** `multipart/form-data`
 
-    {  
-    	"refresh_token": "refresh_token_here"  
-    }  
+**Request Body**
+key: "file": The image file to be uploaded (allowed extensions: `.jpg`, `.jpeg`, `.png`)
 
-**Response:**
+**Response**
+```
+{
+	"messageType": "S",
+	"message": "Files uploaded successfully",
+	"urls": [
+	 "https://iosclass.ams3.digitaloceanspaces.com/1631234567890.jpg",
+	 "https://iosclass.ams3.digitaloceanspaces.com/1631234567891.jpg" 
+   ] 
+ }
+```
+## Profile
+Get user profile by auth header
+**Endpoint:** `GET v1/me`
+**Header** `"Authorization": "Bearer access_token"`
 
-    {  
-    	"accessToken": "new_access_token",  
-    	"refreshToken": "new_refresh_token"  
-    }  
+**Response**
+```
+{
+	"id":  "user_id",
+    "full_name":  "John Doe",
+    "email":  "johndoe@example.com",
+    "role":  "user_role",
+    "created_at":  "2023-08-05T12:34:56Z",
+    "updated_at":  "2023-08-05T12:34:56Z"  
+}
+```
+# Places
+## Post a place
+Create a place
+**Endpoint:** `POST /v1/places`
+**Header** `"Authorization": "Bearer access_token"`
 
-# Protected Routes
+**Request**
+```  
+{
+	"place": "Nevşehir, Türkiye",
+    "title": "Kapadokya",
+    "description": "Kapadokya, adeta peri masallarının gerçeğe dönüştüğü büyülü bir dünyadır.",
+    "cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+    "latitude": 38.6431,
+    "longitude": 34.8287
+}
+```
+**Response**
+```  
+{
+	"message": "Place successfully created.",
+	"status": "success"
+}
+```
+## Update a place
+Update a place
+**Endpoint:** `PUT /v1/places`
+**Header** `"Authorization": "Bearer access_token"`
 
-Note: For protected routes, include the Authorization header with the value Bearer <access_token>.
+**Request**
+```  
+{
+	"place": "Nevşehir, Türkiye",
+    "title": "Kapadokya",
+    "description": "Kapadokya, adeta peri masallarının gerçeğe dönüştüğü büyülü bir dünyadır.",
+    "cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+    "latitude": 38.6431,
+    "longitude": 34.8287
+}
+```
+**Response**
+```  
+{
+	"message": "Place successfully updated.",
+	"status": "success"
+}
+```
+## Delete a place
+Delete a place
+**Endpoint:** `DELETE /v1/places/:placeId`
+**Header** `"Authorization": "Bearer access_token"`
 
-## Get User Profile
+**Response**
+```  
+{
+	"message": "Place successfully deleted.",
+	"status": "success"
+}
+```
+## Get All Places
+Get all places
+**Endpoint:** `GET /v1/places`
+**Pagination:** `GET /v1/places?page=1&limit=10`
 
-Get user’s profile information.  
-**Endpoint:** `GET /v1/me`  
-**Header:** `"Authorization": "Bearer access_token"`
+**Response**
+```  
+{
+  "data": {
+    "count": 1,
+    "places": [
+      {
+        "id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "creator": "Furkan Kızmaz",
+        "place": "Nevşehir, Türkiye",
+        "title": "Kapadokya",
+        "description": "Description...",
+        "cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+        "latitude": 38.6454,
+        "longitude": 34.8283,
+        "created_at": "2023-08-24T08:39:21.978094Z",
+        "updated_at": "2023-08-24T08:42:48.150143Z"
+      }
+    ]
+  },
+  "status": "success"
+}
+```
+## Get a Place by ID
+Get all places
+**Endpoint:** `GET /v1/places/:placeId`
 
-**Response:**
-
-    {  
-    	"id": "user_id",  
-    	"full_name": "John Doe",  
-    	"email": "johndoe@example.com",  
-    	"role": "user_role",  
-    	"created_at": "2023-08-05T12:34:56Z",  
-    	"updated_at": "2023-08-05T12:34:56Z"  
-    }  
-
-## Create a Travel
-
-Create a new travel entry.  
-**Endpoint:** `POST /v1/travels`  
-**Header:** `"Authorization": "Bearer access_token"`
-
-**Request:**
-
-    {
-      "visit_date": "2023-08-10T00:00:00Z",
-      "location": "Destination City",
-      "information": "Travel details here", ? Optional
-      "image_url": "https://example.com/image.png", ? Optional
-      "latitude": 37.12353,
-      "longitude": -122.95421
+**Response**
+```
+{
+  "data": {
+    "place": {
+      "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+      "creator": "Melihozm",
+      "place": "Adıyaman, Türkiye",
+      "title": "Nemrut Dağı Milli Parkı",
+      "description": "Description...",
+      "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+      "latitude": 37.980927,
+      "longitude": 38.74131,
+      "created_at": "2023-08-24T08:54:08.329671Z",
+      "updated_at": "2023-08-24T08:54:08.329671Z"
     }
+  },
+  "status": "success"
+}
+```
+## Get All Places for User
+Get all places specify with user auth token
+**Endpoint:** `GET /v1/places/user`
+**Header** `"Authorization": "Bearer access_token"`
 
-**Response:**
-
-    {
-       "message": "Travel successfully created",
-       "status": "success"
+**Response**
+```
+{
+  "data": {
+    "place": {
+      "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+      "creator": "Melihozm",
+      "place": "Adıyaman, Türkiye",
+      "title": "Nemrut Dağı Milli Parkı",
+      "description": "Description...",
+      "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+      "latitude": 37.980927,
+      "longitude": 38.74131,
+      "created_at": "2023-08-24T08:54:08.329671Z",
+      "updated_at": "2023-08-24T08:54:08.329671Z"
     }
+  },
+  "status": "success"
+}
+```
+# Gallery
+## Post a gallery image
+Create a gallery image
+**Endpoint:** `POST /v1/galleries`
+**Header** `"Authorization": "Bearer access_token"`
 
-## List Travels
+**Request**
+```  
+{
+    "place_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
+    "image_url": "https://example.com/animage.png"
+}
+```
+**Response**
+```  
+{
+	"message": "Image added to gallery.",
+	"status": "success"
+}
+```
+## Delete a gallery image
+Delete a gallery image
+**Endpoint:** `DELETE /v1/galleries/:placeId/:imageId`
+**Header** `"Authorization": "Bearer access_token"`
 
-Get a list of travel entries.
+**Response**
+```  
+{
+	"message": "Image deleted from gallery.",
+	"status": "success"
+}
+```
+## Get All Gallery by Place ID
+It's public route dont, need to give header.
+**Endpoint:** `GET /v1/galleries/:placeId`
 
-**Endpoint:** `GET /v1/travels?page=1&limit=10`  
-**Header:** `"Authorization": "Bearer access_token"`
-
-**Response:**
-
-    {
-      "data": {
-        "count": 3,
-        "travels": [
-          {
-            "id": "39fa7def-a4ce-42e1-8f66-97b6fdecd639",
-            "visit_date": "2023-08-10T00:00:00Z",
-            "location": "Destination City",
-            "information": "Travel details here",
-            "image_url": "URL here",
-            "latitude": 42.0,
-            "longitude": 122.0,
-            "created_at": "2023-08-18T20:49:46.869205Z",
-            "updated_at": "2023-08-18T20:49:46.869205Z"
-          },
-          {
-            "id": "8d76b17b-67fa-4afe-a335-b0c089e50255",
-            "visit_date": "2023-08-10T00:00:00Z",
-            "location": "Destination City",
-            "information": "Travel details here",
-            "image_url": "URL here",
-            "latitude": 42.0,
-            "longitude": 122.0,
-            "created_at": "2023-08-18T20:49:47.678662Z",
-            "updated_at": "2023-08-18T20:49:47.678662Z"
-          },
-          {
-            "id": "01abd8f0-2e1d-4a39-9e8a-7fb55da83760",
-            "visit_date": "2023-08-10T00:00:00Z",
-            "location": "Destination City",
-            "information": "Travel details here",
-            "image_url": "URL here",
-            "latitude": 42.0,
-            "longitude": 122.0,
-            "created_at": "2023-08-18T20:49:51.010944Z",
-            "updated_at": "2023-08-18T20:49:51.010944Z"
-          }
-        ]
+**Response**
+```
+{
+  "data": {
+    "count": 3,
+    "images": [
+      {
+        "id": "287c0591-f0c2-4e67-9061-6d2d3eba7848",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868653636050606.png",
+        "created_at": "2023-08-24T09:18:18.759584Z",
+        "updated_at": "2023-08-24T09:18:18.759584Z"
       },
-      "status": "success"
-    }
+      {
+        "id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868654206658092.png",
+        "created_at": "2023-08-24T09:18:30.33605Z",
+        "updated_at": "2023-08-24T09:18:30.33605Z"
+      },
+      {
+        "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868654322256108.png",
+        "created_at": "2023-08-24T09:18:39.709658Z",
+        "updated_at": "2023-08-24T09:18:39.709658Z"
+      }
+    ]
+  },
+  "status": "success"
+}
+```
+# Visit
+## Post a Visit
+Create a user visit
+**Endpoint:** `POST /v1/visits`
+**Header** `"Authorization": "Bearer access_token"`
 
-## Get Travel by ID
+**Request**
+```  
+{
+    "place_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
+    "visited_at": "2023-08-10T00:00:00Z"
+}
+```
+**Response**
+```  
+{
+	"message": "Visit successfully created.",
+	"status": "success"
+}
+```
+## Get All Visits
+Get all user visits
+**Endpoint:** `GET /v1/visits`
+**Pagination:** `GET /v1/visits?page=1&limit=10`
+**Header** `"Authorization": "Bearer access_token"`
 
-Get details of a specific travel entry.
+**Response**
+```
+{
+  "data": {
+    "count": 3,
+    "visits": [
+      {
+        "id": "287c0591-f0c2-4e67-9061-6d2d3eba7848",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "visited_at": "2023-08-24T09:18:18.759584Z",
+        "created_at": "2023-08-24T09:18:18.759584Z",
+        "updated_at": "2023-08-24T09:18:18.759584Z"
+      },
+      {
+        "id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "visited_at": "2023-08-24T09:18:18.759584Z",
+        "created_at": "2023-08-24T09:18:30.33605Z",
+        "updated_at": "2023-08-24T09:18:30.33605Z"
+      },
+      {
+        "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "visited_at": "2023-08-24T09:18:18.759584Z",
+        "created_at": "2023-08-24T09:18:39.709658Z",
+        "updated_at": "2023-08-24T09:18:39.709658Z"
+      }
+    ]
+  },
+  "status": "success"
+}
+```
+## Get A Visit By ID
+Get a visit by visit id.
+**Endpoint:** `GET /v1/visits/visitId`
+**Header** `"Authorization": "Bearer access_token"`
 
-**Endpoint:** `GET /v1/travels/travelId`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Response:**
+**Response**
+```
+{
+  "data": {
+    "visit": {
+        "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
+        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+        "visited_at": "2023-08-24T09:18:18.759584Z",
+        "created_at": "2023-08-24T09:18:39.709658Z",
+        "updated_at": "2023-08-24T09:18:39.709658Z"
+      }
+  },
+  "status": "success"
+}
+```
+## Delete A Visit By ID
+Delete a visit by visit id.
+**Endpoint:** `DELETE /v1/visits/visitId`
+**Header** `"Authorization": "Bearer access_token"`
 
-    {
-    	"data": {
-    		"travel": {
-    			"id": "0d498d8a-2c2a-4908-b03b-e153762cecde",
-    			"visit_date": "2023-08-10T00:00:00Z",
-    			"location": "Destination City",
-    			"information": "Travel details here",
-    			"image_url": "https://example.com/image2.jpg",
-    			"latitude": 48.8566,
-    			"longitude": 122.12353,
-    			"created_at": "2023-08-18T20:49:40.687527Z",
-    			"updated_at": "2023-08-18T20:49:40.687527Z"
-    		}
-    	},
-    	"status": "success"
-    }
+**Response**
+```
+{
+	"message": "Visit successfully deleted.",
+	"status": "success" 
+}
+```
 
-## Update Travel
 
-Update details of a specific travel entry.
 
-**Endpoint:** `PUT /v1/travels/travelId`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Request:**
 
-    {
-      "visit_date": "2023-08-10T00:00:00Z",
-      "location": "Destination City",
-      "information": "Travel details here", ? Optional
-      "image_url": "https://example.com/image.png", ? Optional
-      "latitude": 37.12353,
-      "longitude": -122.95421
-    }
 
-**Response:**
 
-    {
-    	"status": "success",
-    	"message": "Travel successfully updated"
-    }
 
-## Delete Travel
 
-Delete a specific travel entry.
 
-**Endpoint:** `DELETE /v1/travels/travelId`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Response:**
 
-    {
-    	"message": "travel successfully deleted",
-    	"status": "success"
-    }
 
-## Create a Gallery Image
 
-Create a new gallery entry.  
-**Endpoint:** `POST /v1/galleries`  
-**Header:** `"Authorization": "Bearer access_token"`
-
-**Request:**
-
-    {
-      "travel_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
-      "image_url": "https://example.com/tree.png",
-      "caption": "Bir ağaç resmi" 
-    }
-
-**Response:**
-
-    {
-    	"message": "Image added to gallery",
-    	"status": "success"
-    }
-
-## Get All Gallery Images
-
-Get all gallery images.  
-**Endpoint:** `GET /v1/galleries/travelId`  
-**Header:** `"Authorization": "Bearer access_token"`
-
-**Response:**
-
-    {
-    	"data": {
-    		"images": [
-    			{
-    				"id": "39e25b3e-fe18-45d1-98c7-4c22c56c0d33",
-    				"travel_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
-    				"image_url": "https://example.org/tree.png",
-    				"caption": "Bir ağaç resmi",
-    				"created_at": "2023-08-18T21:06:26.866468Z",
-    				"updated_at": "2023-08-18T21:06:26.866468Z"
-    			}
-    		],
-    		"count": 1
-    	},
-    	"status": "success"
-    }
-
-## Delete Gallery Image
-
-Delete a specific gallery image.  
-**Endpoint:** `DELETE /v1/galleries/travelId/imageId`  
-**Header:** `"Authorization": "Bearer access_token"`
-
-**Response:**
-
-    {
-    	"message": "Image deleted from gallery",
-    	"status": "success"
-    }
-
-### Address
-
-Perform operations related to addresses.
-
-## Create Address
-
-Create a new address entry.
-
-**Endpoint:** `POST /v1/addresses`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Request:**
-
-    {  
-    	"address_title": "Home",  
-    	"state": "State",  
-    	"city": "City",  
-    	"country": "Country",  
-    	"address": "Address"  
-    }  
-
-**Response:**
-
-    {
-    	"message": "Address successfully created",
-    	"status": "success"
-    }
-
-## List Addresses
-
-Get a list of address entries.
-
-**Endpoint:** `GET /v1/addresses`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Response:**
-
-    {
-    	"data": {
-    		"addresses": [
-    			{
-    				"id": "39e25b3e-fe18-45d1-98c7-4c22c56c0d33",
-    				"address_title": "Home",
-    				"state": "State",
-    				"city": "City",
-    				"country": "Country",
-    				"address": "Address",
-    				"created_at": "2023-08-18T21:06:26.866468Z",
-    				"updated_at": "2023-08-18T21:06:26.866468Z"
-    			}
-    		],
-    		"count": 1
-    	},
-    	"status": "success"
-    }
-
-## Get an Address by ID
-
-Get details of a specific address entry.
-
-**Endpoint:** `GET /v1/addresses/$(addressId)`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Response:**
-
-    {
-    	"data": {
-    		"address": {
-    			"id": "39e25b3e-fe18-45d1-98c7-4c22c56c0d33",
-    			"address_title": "Home",
-    			"state": "State",
-    			"city": "City",
-    			"country": "Country",
-    			"address": "Address",
-    			"created_at": "2023-08-18T21:06:26.866468Z",
-    			"updated_at": "2023-08-18T21:06:26.866468Z"
-    		}
-    	},
-    	"status": "success"
-    }
-
-## Update Address
-
-Update details of a specific address entry.
-
-**Endpoint:** `PUT /v1/addresses/$(addressId)`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Request:**
-
-    {  
-    	"address_title": "Home",  
-    	"state": "State",  
-    	"city": "City",  
-    	"country": "Country",  
-    	"address": "Address"  
-    }  
-
-**Response:**
-
-    {
-    	"status": "success",
-    	"message": "Address successfully updated"
-    }
-
-## Delete Address
-
-Delete a specific address entry.
-
-**Endpoint:** `DELETE /v1/addresses/$(addressId)`  
-**Header:** `"Authorization": "Bearer access_token"`  
-**Response:**
-
-    {
-    	"message": "address successfully deleted",
-    	"status": "success"
-    }
-
-</div>
-
-</div>

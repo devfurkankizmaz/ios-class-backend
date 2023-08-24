@@ -1,7 +1,6 @@
 package configs
 
 import (
-	"github.com/devfurkankizmaz/iosclass-backend/models"
 	"log"
 	"os"
 
@@ -20,27 +19,27 @@ func NewDBConnection() *gorm.DB {
 	}
 
 	// Drop and re-create the Address table with new fields
+	/*
+		err = DB.AutoMigrate(&models.Visit{})
 
-	err = DB.AutoMigrate(&models.Visit{})
+		if err != nil {
+			log.Fatal("Migration Failed:  \n", err.Error())
+			os.Exit(1)
+		}
 
-	if err != nil {
-		log.Fatal("Migration Failed:  \n", err.Error())
-		os.Exit(1)
-	}
-
-	query := `
-			        ALTER TABLE visits
-					ADD CONSTRAINT fk_place
-					FOREIGN KEY (place_id)
-					REFERENCES places (ID)
-					ON DELETE CASCADE;
-			    `
-
+		query := `
+				        ALTER TABLE visits
+						ADD CONSTRAINT fk_place
+						FOREIGN KEY (place_id)
+						REFERENCES places (ID)
+						ON DELETE CASCADE;
+				    `
+	*/
 	//	query2 := `ALTER TABLE users
 	//         ADD CONSTRAINT fk_user_travels FOREIGN KEY (user_id) REFERENCES travels(id) ON DELETE CASCADE;`
 	//query := `CREATE UNIQUE INDEX IF NOT EXISTS idx_user_email ON users(email);`
 
-	DB.Exec(query)
+	//DB.Exec(query)
 	//DB.Exec(query2)
 	//DB.Exec(query)
 
