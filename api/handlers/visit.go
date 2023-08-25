@@ -41,7 +41,7 @@ func (vh *VisitHandler) Create(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-	response := fmt.Sprintf("Visit successfully created.")
+	response := fmt.Sprintf(newVisit.ID.String())
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
 }
 
