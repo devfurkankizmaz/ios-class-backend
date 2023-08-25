@@ -118,7 +118,7 @@ Create a place
 ```
 ## Update a place
 Update a place
-**Endpoint:** `PUT /v1/places`
+**Endpoint:** `PUT /v1/places/:placeId`
 **Header** `"Authorization": "Bearer access_token"`
 
 **Request**
