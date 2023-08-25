@@ -114,13 +114,32 @@ func (vh *VisitHandler) FetchByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
+
+	placeIDString := visit.PlaceID.String()
+	place, err := vh.PlaceService.FetchByID(placeIDString)
+
+	placeResponse := models.PlaceResponse{
+		ID:            place.ID,
+		Creator:       place.Creator,
+		Place:         place.Place,
+		Title:         place.Title,
+		Description:   place.Description,
+		CoverImageUrl: place.CoverImageUrl,
+		Latitude:      place.Latitude,
+		Longitude:     place.Longitude,
+		CreatedAt:     place.CreatedAt,
+		UpdatedAt:     place.UpdatedAt,
+	}
+
 	response := models.VisitResponse{
 		ID:        visit.ID,
 		PlaceID:   visit.PlaceID,
 		VisitedAt: visit.VisitedAt,
 		CreatedAt: visit.CreatedAt,
 		UpdatedAt: visit.UpdatedAt,
+		Place:     placeResponse,
 	}
+
 	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"visit": response}})
 }
 
