@@ -51,8 +51,8 @@ func (ph *PlaceHandler) Create(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-	response := fmt.Sprintf("Place successfully created.")
-	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
+	//response := fmt.Sprintf("Place successfully created.")
+	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": newPlace.ID})
 }
 
 func (ph *PlaceHandler) FetchAll(c echo.Context) error {
