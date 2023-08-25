@@ -54,9 +54,10 @@ func (ph *PlaceHandler) Create(c echo.Context) error {
 	}
 	cr := time.Now()
 	strPlaceID := newPlace.ID.String()
+	uuidObj, err := uuid.Parse(strPlaceID)
 	newVisit := models.Visit{
 		UserID:    UID,
-		PlaceID:   uuid.MustParse(strPlaceID),
+		PlaceID:   uuidObj,
 		VisitedAt: &cr,
 	}
 
