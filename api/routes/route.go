@@ -106,10 +106,8 @@ func NewGalleryOpenRouter(db *gorm.DB, group *echo.Group) {
 
 func NewPlaceOpenRouter(db *gorm.DB, group *echo.Group) {
 	r := repository.NewPlaceRepository(db)
-	vr := repository.NewVisitRepository(db)
 	h := &handlers.PlaceHandler{
 		PlaceService: service.NewPlaceService(r),
-		VisitService: service.NewVisitService(vr),
 	}
 	group.GET("/places", h.FetchAll)
 	group.GET("/places/:placeId", h.FetchByID)

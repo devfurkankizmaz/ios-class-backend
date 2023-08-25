@@ -14,7 +14,6 @@ import (
 
 type PlaceHandler struct {
 	PlaceService models.PlaceService
-	VisitService models.VisitService
 }
 
 func (ph *PlaceHandler) Create(c echo.Context) error {
@@ -49,19 +48,6 @@ func (ph *PlaceHandler) Create(c echo.Context) error {
 	}
 
 	err = ph.PlaceService.Create(&newPlace)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
-	}
-	cr := time.Now()
-	strPlaceID := newPlace.ID.String()
-	uuidObj, err := uuid.Parse(strPlaceID)
-	newVisit := models.Visit{
-		UserID:    UID,
-		PlaceID:   uuidObj,
-		VisitedAt: &cr,
-	}
-
-	err = ph.VisitService.Create(&newVisit)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
