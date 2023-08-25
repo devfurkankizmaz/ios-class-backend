@@ -21,11 +21,12 @@ type VisitInput struct {
 }
 
 type VisitResponse struct {
-	ID        *uuid.UUID `json:"id"`
-	PlaceID   uuid.UUID  `json:"place_id"`
-	VisitedAt *time.Time `json:"visited_at"`
-	CreatedAt *time.Time `json:"created_at"`
-	UpdatedAt *time.Time `json:"updated_at"`
+	ID        *uuid.UUID    `json:"id"`
+	PlaceID   uuid.UUID     `json:"place_id"`
+	VisitedAt *time.Time    `json:"visited_at"`
+	CreatedAt *time.Time    `json:"created_at"`
+	UpdatedAt *time.Time    `json:"updated_at"`
+	Place     PlaceResponse `json:"place"`
 }
 
 type VisitRepository interface {

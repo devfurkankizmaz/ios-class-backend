@@ -12,6 +12,7 @@ import (
 
 type VisitHandler struct {
 	VisitService models.VisitService
+	PlaceService models.PlaceService
 }
 
 func (vh *VisitHandler) Create(c echo.Context) error {
@@ -68,13 +69,37 @@ func (vh *VisitHandler) FetchAllByUserID(c echo.Context) error {
 	response := make([]models.VisitResponse, len(visits))
 
 	for k, v := range visits {
-		response[k] = models.VisitResponse{
+		placeIDString := v.PlaceID.String()
+		place, err := vh.PlaceService.FetchByID(placeIDString)
+
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+		}
+
+		placeResponse := models.PlaceResponse{
+			ID:            place.ID,
+			Creator:       place.Creator,
+			Place:         place.Place,
+			Title:         place.Title,
+			Description:   place.Description,
+			CoverImageUrl: place.CoverImageUrl,
+			Latitude:      place.Latitude,
+			Longitude:     place.Longitude,
+			CreatedAt:     place.CreatedAt,
+			UpdatedAt:     place.UpdatedAt,
+		}
+
+		visitResponse := models.VisitResponse{
 			ID:        v.ID,
 			PlaceID:   v.PlaceID,
 			VisitedAt: v.VisitedAt,
 			CreatedAt: v.CreatedAt,
 			UpdatedAt: v.UpdatedAt,
+			Place:     placeResponse,
 		}
+
+		response[k] = visitResponse
+
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"count": len(visits), "visits": response}})

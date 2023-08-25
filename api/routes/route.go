@@ -64,8 +64,10 @@ func NewProfileRouter(db *gorm.DB, group *echo.Group) {
 
 func NewVisitRouter(db *gorm.DB, group *echo.Group) {
 	r := repository.NewVisitRepository(db)
+	pr := repository.NewPlaceRepository(db)
 	h := &handlers.VisitHandler{
 		VisitService: service.NewVisitService(r),
+		PlaceService: service.NewPlaceService(pr),
 	}
 	group.POST("/visits", h.Create)
 	group.GET("/visits", h.FetchAllByUserID)

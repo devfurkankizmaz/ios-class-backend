@@ -6,7 +6,7 @@ require (
 	github.com/aws/aws-sdk-go v1.44.329
 	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/golang-jwt/jwt/v4 v4.5.0
-	github.com/google/uuid v1.3.0
+	github.com/google/uuid v1.3.1
 	github.com/labstack/echo/v4 v4.11.1
 	golang.org/x/crypto v0.11.0
 	gorm.io/driver/postgres v1.5.2
