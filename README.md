@@ -334,6 +334,18 @@ Get all user visits
         "visited_at": "2023-08-24T09:18:18.759584Z",
         "created_at": "2023-08-24T09:18:18.759584Z",
         "updated_at": "2023-08-24T09:18:18.759584Z"
+        "place": {
+            "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+            "creator": "Melihozm",
+            "place": "Adıyaman, Türkiye",
+            "title": "Nemrut Dağı Milli Parkı",
+            "description": "Description...",
+            "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+            "latitude": 37.980927,
+            "longitude": 38.74131,
+            "created_at": "2023-08-24T08:54:08.329671Z",
+            "updated_at": "2023-08-24T08:54:08.329671Z"   
+        }
       },
       {
         "id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
@@ -341,6 +353,18 @@ Get all user visits
         "visited_at": "2023-08-24T09:18:18.759584Z",
         "created_at": "2023-08-24T09:18:30.33605Z",
         "updated_at": "2023-08-24T09:18:30.33605Z"
+        "place": {
+            "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+            "creator": "Melihozm",
+            "place": "Adıyaman, Türkiye",
+            "title": "Nemrut Dağı Milli Parkı",
+            "description": "Description...",
+            "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+            "latitude": 37.980927,
+            "longitude": 38.74131,
+            "created_at": "2023-08-24T08:54:08.329671Z",
+            "updated_at": "2023-08-24T08:54:08.329671Z"   
+        }
       },
       {
         "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
@@ -348,6 +372,18 @@ Get all user visits
         "visited_at": "2023-08-24T09:18:18.759584Z",
         "created_at": "2023-08-24T09:18:39.709658Z",
         "updated_at": "2023-08-24T09:18:39.709658Z"
+        "place": {
+            "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+            "creator": "Melihozm",
+            "place": "Adıyaman, Türkiye",
+            "title": "Nemrut Dağı Milli Parkı",
+            "description": "Description...",
+            "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+            "latitude": 37.980927,
+            "longitude": 38.74131,
+            "created_at": "2023-08-24T08:54:08.329671Z",
+            "updated_at": "2023-08-24T08:54:08.329671Z"   
+        }
       }
     ]
   },
@@ -369,6 +405,18 @@ Get a visit by visit id.
         "visited_at": "2023-08-24T09:18:18.759584Z",
         "created_at": "2023-08-24T09:18:39.709658Z",
         "updated_at": "2023-08-24T09:18:39.709658Z"
+        "place": {
+            "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+            "creator": "Melihozm",
+            "place": "Adıyaman, Türkiye",
+            "title": "Nemrut Dağı Milli Parkı",
+            "description": "Description...",
+            "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+            "latitude": 37.980927,
+            "longitude": 38.74131,
+            "created_at": "2023-08-24T08:54:08.329671Z",
+            "updated_at": "2023-08-24T08:54:08.329671Z"   
+        }
       }
   },
   "status": "success"
