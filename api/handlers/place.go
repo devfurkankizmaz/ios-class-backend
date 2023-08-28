@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"log"
 	"net/http"
 	"strconv"
 	"time"
@@ -116,7 +117,7 @@ func (ph *PlaceHandler) FetchByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
-
+	log.Println("place", place)
 	response := models.PlaceResponse{
 		ID:            place.ID,
 		Creator:       place.Creator,
