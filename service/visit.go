@@ -20,6 +20,14 @@ func (vs *visitService) Create(visit *models.Visit) error {
 	return nil
 }
 
+func (vs *visitService) FetchByPlaceID(id string) ([]models.Visit, error) {
+	visits, err := vs.visitRepository.FetchByPlaceID(id)
+	if err != nil {
+		return visits, err
+	}
+	return visits, nil
+}
+
 func (vs *visitService) FetchAllByUserID(id string, limit int, page int) ([]models.Visit, error) {
 	offset := (page - 1) * page
 	visits, err := vs.visitRepository.FetchAllByUserID(id, limit, offset)

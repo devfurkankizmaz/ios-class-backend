@@ -116,6 +116,15 @@ func (ph *PlaceHandler) FetchByID(c echo.Context) error {
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
+	isVisited := false
+	visit, err := ph.VisitService.FetchByPlaceID(placeId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+	if visit != nil {
+		isVisited = true
+	}
+
 	response := models.PlaceResponse{
 		ID:            place.ID,
 		Creator:       place.Creator,
@@ -127,6 +136,7 @@ func (ph *PlaceHandler) FetchByID(c echo.Context) error {
 		CoverImageUrl: place.CoverImageUrl,
 		CreatedAt:     place.CreatedAt,
 		UpdatedAt:     place.UpdatedAt,
+		IsVisited:     isVisited,
 	}
 	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"place": response}})
 }

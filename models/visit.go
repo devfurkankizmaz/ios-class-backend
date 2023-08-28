@@ -32,6 +32,7 @@ type VisitResponse struct {
 type VisitRepository interface {
 	Create(visit *Visit) error
 	FetchAllByUserID(id string, limit int, offset int) ([]Visit, error)
+	FetchByPlaceID(id string) ([]Visit, error)
 	FetchByID(id string) (Visit, error)
 	DeleteByID(id string) error
 }
@@ -39,6 +40,7 @@ type VisitRepository interface {
 type VisitService interface {
 	Create(visit *Visit) error
 	FetchAllByUserID(id string, limit int, page int) ([]Visit, error)
+	FetchByPlaceID(id string) ([]Visit, error)
 	FetchByID(id string) (Visit, error)
 	DeleteByID(id string) error
 }

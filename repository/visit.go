@@ -31,6 +31,15 @@ func (vr *visitRepository) FetchAllByUserID(id string, limit int, offset int) ([
 	return visits, nil
 }
 
+func (vr *visitRepository) FetchByPlaceID(id string) ([]models.Visit, error) {
+	var visits = []models.Visit{}
+	result := vr.db.Where("place_id = ?", id).Find(&visits)
+	if result.Error != nil {
+		return visits, result.Error
+	}
+	return visits, nil
+}
+
 func (vr *visitRepository) FetchByID(id string) (models.Visit, error) {
 	var visit = models.Visit{}
 	result := vr.db.Where("id = ?", id).First(&visit)

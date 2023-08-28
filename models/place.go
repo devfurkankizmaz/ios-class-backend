@@ -40,6 +40,7 @@ type PlaceResponse struct {
 	Longitude     float64    `json:"longitude"`
 	CreatedAt     *time.Time `json:"created_at"`
 	UpdatedAt     *time.Time `json:"updated_at"`
+	IsVisited     bool       `json:"is_visited"`
 }
 
 type PlaceRepository interface {
