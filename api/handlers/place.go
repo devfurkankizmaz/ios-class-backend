@@ -215,6 +215,14 @@ func (ph *PlaceHandler) FetchAllByUserID(c echo.Context) error {
 	response := make([]models.PlaceResponse, len(places))
 
 	for k, v := range places {
+		isVisited := false
+		visit, err := ph.VisitService.FetchByPlaceID(v.ID.String())
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+		}
+		if visit != nil {
+			isVisited = true
+		}
 		response[k] = models.PlaceResponse{
 			ID:            v.ID,
 			Creator:       v.Creator,
@@ -226,6 +234,7 @@ func (ph *PlaceHandler) FetchAllByUserID(c echo.Context) error {
 			Longitude:     v.Longitude,
 			CreatedAt:     v.CreatedAt,
 			UpdatedAt:     v.UpdatedAt,
+			IsVisited:     isVisited,
 		}
 	}
 
