@@ -83,7 +83,11 @@ func (vh *VisitHandler) FetchByPlaceID(c echo.Context) error {
 		Place:     placeResponse,
 	}
 
-	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"visit": response}})
+	if response.ID == nil {
+		return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": false})
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": true})
 }
 
 func (vh *VisitHandler) FetchAllByUserID(c echo.Context) error {
