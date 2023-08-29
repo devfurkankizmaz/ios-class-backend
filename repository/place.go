@@ -33,7 +33,7 @@ func (pr *placeRepository) FetchAllByUserID(id string, limit int, offset int) ([
 
 func (pr *placeRepository) FetchAll(limit int, offset int) ([]models.Place, error) {
 	var places = []models.Place{}
-	result := pr.db.Limit(limit).Offset(offset).Find(&places)
+	result := pr.db.Order("created_at desc").Limit(limit).Offset(offset).Find(&places)
 	if result.Error != nil {
 		return places, result.Error
 	}
