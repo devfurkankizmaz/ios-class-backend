@@ -149,25 +149,27 @@ func (vh *VisitHandler) DeleteByID(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "param not found"})
 	}
 
-	userID := c.Get("x-user-id")
-	value := fmt.Sprint(userID)
-	UID, _ := uuid.Parse(value)
+	/*
+		userID := c.Get("x-user-id")
+		value := fmt.Sprint(userID)
+		UID, _ := uuid.Parse(value)
 
-	visit, err := vh.VisitService.FetchByID(visitId)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
-	}
+		visit, err := vh.VisitService.FetchByID(visitId)
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+		}
 
-	place, err := vh.PlaceService.FetchByID(visit.PlaceID.String())
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
-	}
+		place, err := vh.PlaceService.FetchByID(visit.PlaceID.String())
+		if err != nil {
+			return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+		}
 
-	if place.UserID == UID {
-		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "You're creator of this visit, place can't be deleted"})
-	}
+		if place.UserID == UID {
+			return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "You're creator of this visit, place can't be deleted"})
+		}
+	*/
 
-	err = vh.VisitService.DeleteByID(visitId)
+	err := vh.VisitService.DeleteByID(visitId)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
 	}
