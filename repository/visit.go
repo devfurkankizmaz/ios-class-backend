@@ -31,13 +31,13 @@ func (vr *visitRepository) FetchAllByUserID(id string, limit int, offset int) ([
 	return visits, nil
 }
 
-func (vr *visitRepository) FetchByPlaceID(id string) ([]models.Visit, error) {
-	var visits = []models.Visit{}
-	result := vr.db.Where("place_id = ?", id).Find(&visits)
+func (vr *visitRepository) FetchByPlaceIDAndUserID(placeID string, userID string) (models.Visit, error) {
+	var visit models.Visit
+	result := vr.db.Where("place_id = ? AND user_id = ?", placeID, userID).First(&visit)
 	if result.Error != nil {
-		return visits, result.Error
+		return visit, result.Error
 	}
-	return visits, nil
+	return visit, nil
 }
 
 func (vr *visitRepository) FetchByID(id string) (models.Visit, error) {

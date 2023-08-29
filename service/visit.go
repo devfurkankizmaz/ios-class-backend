@@ -20,12 +20,12 @@ func (vs *visitService) Create(visit *models.Visit) error {
 	return nil
 }
 
-func (vs *visitService) FetchByPlaceID(id string) ([]models.Visit, error) {
-	visits, err := vs.visitRepository.FetchByPlaceID(id)
+func (vs *visitService) FetchByPlaceIDAndUserID(placeID string, userID string) (models.Visit, error) {
+	visit, err := vs.visitRepository.FetchByPlaceIDAndUserID(placeID, userID)
 	if err != nil {
-		return visits, err
+		return visit, err
 	}
-	return visits, nil
+	return visit, nil
 }
 
 func (vs *visitService) FetchAllByUserID(id string, limit int, page int) ([]models.Visit, error) {

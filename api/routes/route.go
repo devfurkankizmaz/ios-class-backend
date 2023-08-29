@@ -72,6 +72,8 @@ func NewVisitRouter(db *gorm.DB, group *echo.Group) {
 	group.POST("/visits", h.Create)
 	group.GET("/visits", h.FetchAllByUserID)
 	group.GET("/visits/:visitId", h.FetchByID)
+	group.GET("/visits/user", h.FetchAllByUserID)
+	group.GET("/visits/user/:placeId", h.FetchByPlaceID)
 	group.DELETE("/visits/:visitId", h.DeleteByID)
 }
 

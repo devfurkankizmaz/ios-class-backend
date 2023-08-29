@@ -45,6 +45,47 @@ func (vh *VisitHandler) Create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
 }
 
+func (vh *VisitHandler) FetchByPlaceID(c echo.Context) error {
+	newUID := fmt.Sprint(c.Get("x-user-id"))
+	placeId := c.Param("placeId")
+	if placeId == "" {
+		return c.JSON(http.StatusNotFound, echo.Map{"status": "fail", "message": "param not found"})
+	}
+	visit, err := vh.VisitService.FetchByPlaceIDAndUserID(placeId, newUID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+
+	place, err := vh.PlaceService.FetchByID(placeId)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+
+	placeResponse := models.PlaceResponse{
+		ID:            place.ID,
+		Creator:       place.Creator,
+		Place:         place.Place,
+		Title:         place.Title,
+		Description:   place.Description,
+		CoverImageUrl: place.CoverImageUrl,
+		Latitude:      place.Latitude,
+		Longitude:     place.Longitude,
+		CreatedAt:     place.CreatedAt,
+		UpdatedAt:     place.UpdatedAt,
+	}
+
+	response := models.VisitResponse{
+		ID:        visit.ID,
+		PlaceID:   visit.PlaceID,
+		VisitedAt: visit.VisitedAt,
+		CreatedAt: visit.CreatedAt,
+		UpdatedAt: visit.UpdatedAt,
+		Place:     placeResponse,
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"visit": response}})
+}
+
 func (vh *VisitHandler) FetchAllByUserID(c echo.Context) error {
 	newUID := fmt.Sprint(c.Get("x-user-id"))
 
