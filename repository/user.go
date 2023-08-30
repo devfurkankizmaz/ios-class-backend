@@ -28,6 +28,45 @@ func (ur *userRepository) Create(user *models.User) error {
 	return nil
 }
 
+func (ur *userRepository) ChangePassword(userID string, newPassword string) error {
+	var user models.User
+	result := ur.db.Where("id = ?", userID).First(&user)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	user.Password = newPassword
+	result = ur.db.Save(&user)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
+func (ur *userRepository) EditProfile(userID string, newEmail string, newFullName string, newPP string) error {
+	var user models.User
+	result := ur.db.Where("id = ?", userID).First(&user)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	user.Email = newEmail
+	user.FullName = newFullName
+	user.PPUrl = newPP
+
+	result = ur.db.Save(&user)
+
+	if result.Error != nil {
+		return result.Error
+	}
+
+	return nil
+}
+
 func (ur *userRepository) FetchAll() ([]models.User, error) {
 	var users = []models.User{}
 	result := ur.db.Find(&users)

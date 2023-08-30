@@ -4,6 +4,7 @@ type RegisterInput struct {
 	FullName string `json:"full_name" validate:"required,min=4,max=30"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required,min=6,max=25"`
+	PPUrl    string `json:"pp_url"`
 }
 
 type RegisterService interface {

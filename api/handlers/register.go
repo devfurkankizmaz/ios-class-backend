@@ -35,6 +35,7 @@ func (rh *RegisterHandler) Register(c echo.Context) error {
 		FullName: payload.FullName,
 		Email:    strings.ToLower(payload.Email),
 		Password: string(hashedPassword),
+		PPUrl:    payload.PPUrl,
 	}
 
 	err = rh.RegisterService.Create(&newUser)

@@ -12,6 +12,7 @@ type User struct {
 	Email     string     `gorm:"type:varchar(255);uniqueIndex;not null"`
 	Password  string     `gorm:"type:varchar(255);not null"`
 	Role      string     `gorm:"type:varchar(50);not null;default:'user'"`
+	PPUrl     string     `gorm:"type:varchar(255)"`
 	CreatedAt *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 	UpdatedAt *time.Time `gorm:"type:timestamptz;default:current_timestamp"`
 }
@@ -19,6 +20,8 @@ type User struct {
 type UserRepository interface {
 	Create(user *User) error
 	FetchByID(id string) (User, error)
+	ChangePassword(userID string, newPassword string) error
+	EditProfile(userID string, newEmail string, newFullName string, newPP string) error
 	FetchByEmail(email string) (User, error)
 	FetchAll() ([]User, error)
 }
