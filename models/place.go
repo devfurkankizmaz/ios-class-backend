@@ -49,6 +49,8 @@ type PlaceRepository interface {
 	FetchByID(id string) (Place, error)
 	UpdateByID(place *Place, id string) error
 	DeleteByID(id string) error
+	FetchLastN(n int) ([]Place, error)
+	FetchRandomN(n int) ([]Place, error)
 }
 
 type PlaceService interface {
@@ -58,4 +60,6 @@ type PlaceService interface {
 	FetchByID(id string) (Place, error)
 	UpdateByID(place *Place, id string) error
 	DeleteByID(id string) error
+	FetchLastN(n int) ([]Place, error)
+	FetchRandomN(n int) ([]Place, error)
 }

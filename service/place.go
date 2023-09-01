@@ -73,3 +73,19 @@ func (ps *placeService) DeleteByID(id string) error {
 	}
 	return nil
 }
+
+func (ps *placeService) FetchLastN(n int) ([]models.Place, error) {
+	places, err := ps.placeRepository.FetchLastN(n)
+	if err != nil {
+		return places, err
+	}
+	return places, nil
+}
+
+func (ps *placeService) FetchRandomN(n int) ([]models.Place, error) {
+	places, err := ps.placeRepository.FetchRandomN(n)
+	if err != nil {
+		return places, err
+	}
+	return places, nil
+}

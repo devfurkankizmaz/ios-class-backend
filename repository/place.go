@@ -69,3 +69,21 @@ func (pr *placeRepository) DeleteByID(id string) error {
 	}
 	return nil
 }
+
+func (pr *placeRepository) FetchLastN(n int) ([]models.Place, error) {
+	var places []models.Place
+	result := pr.db.Order("created_at desc").Limit(n).Find(&places)
+	if result.Error != nil {
+		return places, result.Error
+	}
+	return places, nil
+}
+
+func (pr *placeRepository) FetchRandomN(n int) ([]models.Place, error) {
+	var places []models.Place
+	result := pr.db.Order("RANDOM()").Limit(n).Find(&places)
+	if result.Error != nil {
+		return places, result.Error
+	}
+	return places, nil
+}

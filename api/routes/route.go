@@ -112,6 +112,8 @@ func NewPlaceOpenRouter(db *gorm.DB, group *echo.Group) {
 		PlaceService: service.NewPlaceService(r),
 	}
 	group.GET("/places", h.FetchAll)
+	group.GET("/places/last", h.FetchLastN)
+	group.GET("/places/popular", h.FetchRandomN)
 	group.GET("/places/:placeId", h.FetchByID)
 }
 

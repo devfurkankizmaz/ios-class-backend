@@ -249,3 +249,79 @@ func (ph *PlaceHandler) DeleteByID(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, echo.Map{"status": "success", "message": "Place successfully deleted"})
 }
+
+func (ph *PlaceHandler) FetchLastN(c echo.Context) error {
+	limitParam := c.QueryParam("limit")
+	limit := 10
+
+	if limitParam != "" {
+		limitValue, _ := strconv.Atoi(limitParam)
+		if limitValue > 0 && limitValue <= 20 {
+			limit = limitValue
+		} else {
+			return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": "Invalid limit value"})
+		}
+	}
+
+	places, err := ph.PlaceService.FetchLastN(limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+
+	response := make([]models.PlaceResponse, len(places))
+
+	for k, v := range places {
+		response[k] = models.PlaceResponse{
+			ID:            v.ID,
+			Creator:       v.Creator,
+			Place:         v.Place,
+			Title:         v.Title,
+			Description:   v.Description,
+			Latitude:      v.Latitude,
+			Longitude:     v.Longitude,
+			CoverImageUrl: v.CoverImageUrl,
+			CreatedAt:     v.CreatedAt,
+			UpdatedAt:     v.UpdatedAt,
+		}
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"count": len(places), "places": response}})
+}
+
+func (ph *PlaceHandler) FetchRandomN(c echo.Context) error {
+	limitParam := c.QueryParam("limit")
+	limit := 10
+
+	if limitParam != "" {
+		limitValue, _ := strconv.Atoi(limitParam)
+		if limitValue > 0 && limitValue <= 20 {
+			limit = limitValue
+		} else {
+			return c.JSON(http.StatusBadRequest, echo.Map{"status": "fail", "message": "Invalid limit value"})
+		}
+	}
+
+	places, err := ph.PlaceService.FetchRandomN(limit)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"status": "error", "message": err.Error()})
+	}
+
+	response := make([]models.PlaceResponse, len(places))
+
+	for k, v := range places {
+		response[k] = models.PlaceResponse{
+			ID:            v.ID,
+			Creator:       v.Creator,
+			Place:         v.Place,
+			Title:         v.Title,
+			Description:   v.Description,
+			Latitude:      v.Latitude,
+			Longitude:     v.Longitude,
+			CoverImageUrl: v.CoverImageUrl,
+			CreatedAt:     v.CreatedAt,
+			UpdatedAt:     v.UpdatedAt,
+		}
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"status": "success", "data": echo.Map{"count": len(places), "places": response}})
+}
