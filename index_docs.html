@@ -37,6 +37,8 @@
 					<li><a href="#get-all-places">Get All Places</a></li>
 					<li><a href="#get-a-place-by-id">Get a Place by ID</a></li>
 					<li><a href="#get-all-places-for-user">Get All Places for User</a></li>
+					<li><a href="#get-popular-places">Get Popular Places</a></li>
+					<li><a href="#get-last-places">Get Last Places</a></li>
 				</ul>
 			</li>
 			<li><a href="#gallery">Gallery</a>
@@ -52,6 +54,7 @@
 					<li><a href="#get-all-visits">Get All Visits</a></li>
 					<li><a href="#get-a-visit-by-id">Get A Visit By ID</a></li>
 					<li><a href="#delete-a-visit-by-id">Delete A Visit By ID</a></li>
+					<li><a href="#check-visit-by-place-id">Check Visit By Place ID</a></li>
 				</ul>
 			</li>
 		</ul>
@@ -68,15 +71,15 @@
 			<strong>Endpoint:</strong> <code>POST /v1/auth/register</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-	"full_name": "John Doe",
-	"email": "johndoe@example.com",
-	"password": "secretpassword"
+"full_name": "John Doe",
+"email": "johndoe@example.com",
+"password": "secretpassword"
 }
 </code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "You're registered successfully.",
-	"status": "success"
+"message": "You're registered successfully.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="login">Login</h2>
@@ -84,14 +87,14 @@
 			<strong>Endpoint:</strong> <code>POST /v1/auth/login</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-	"email":  "johndoe@example.com",
-	"password":  "secretpassword"
+"email": "johndoe@example.com",
+"password": "secretpassword"
 }
 </code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"accessToken":  "access_token",
-	"refreshToken":  "refresh_token"
+"accessToken": "access_token",
+"refreshToken": "refresh_token"
 }
 </code></pre>
 		<h2 id="refresh">Refresh</h2>
@@ -99,13 +102,13 @@
 			<strong>Endpoint:</strong> <code>POST /v1/auth/refresh</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-	"refresh_token":  "refresh_token_here"
+"refresh_token": "refresh_token_here"
 }
 </code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"accessToken":  "access_token",
-	"refreshToken":  "refresh_token"
+"accessToken": "access_token",
+"refreshToken": "refresh_token"
 }
 </code></pre>
 		<h2 id="upload">Upload</h2>
@@ -116,13 +119,13 @@
 			key: “file”: The image file to be uploaded (allowed extensions: <code>.jpg</code>, <code>.jpeg</code>, <code>.png</code>)</p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"messageType": "S",
-	"message": "Files uploaded successfully",
-	"urls": [
-	 "https://iosclass.ams3.digitaloceanspaces.com/1631234567890.jpg",
-	 "https://iosclass.ams3.digitaloceanspaces.com/1631234567891.jpg"
-   ]
- }
+"messageType": "S",
+"message": "Files uploaded successfully",
+"urls": [
+"https://iosclass.ams3.digitaloceanspaces.com/1631234567890.jpg",
+"https://iosclass.ams3.digitaloceanspaces.com/1631234567891.jpg"
+]
+}
 </code></pre>
 		<h2 id="profile">Profile</h2>
 		<p>Get user profile by auth header<br>
@@ -130,13 +133,14 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  	"id": "user_id",
-  	"full_name": "John Doe",
-  	"email": "johndoe@example.com",
-  	"role": "user_role",
-  	"created_at": "2023-08-05T12:34:56Z",
-  	"updated_at": "2023-08-05T12:34:56Z"
-}</code></pre>
+"id": "user_id",
+"full_name": "John Doe",
+"email": "johndoe@example.com",
+"role": "user_role",
+"created_at": "2023-08-05T12:34:56Z",
+"updated_at": "2023-08-05T12:34:56Z"
+}
+</code></pre>
 		<h1 id="places">Places</h1>
 		<h2 id="post-a-place">Post a place</h2>
 		<p>Create a place<br>
@@ -144,17 +148,18 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-  	"place": "Nevşehir, Türkiye",
-  	"title": "Kapadokya",
-  	"description": "Kapadokya, adeta peri masallarının gerçeğe dönüştüğü büyülü bir dünyadır.",
-  	"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
-  	"latitude": 38.6431,
-  	"longitude": 34.8287
-}</code></pre>
+"place": "Nevşehir, Türkiye",
+"title": "Kapadokya",
+"description": "Kapadokya, adeta peri masallarının gerçeğe dönüştüğü büyülü bir dünyadır.",
+"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+"latitude": 38.6431,
+"longitude": 34.8287
+}
+</code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "2983980a-4035-4211-a98d-deb264c6f9f5",
-	"status": "success"
+"message": "Place successfully created.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="update-a-place">Update a place</h2>
@@ -163,17 +168,18 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-  	"place": "Nevşehir, Türkiye",
-  	"title": "Kapadokya",
-  	"description": "Kapadokya, adeta peri masallarının gerçeğe dönüştüğü büyülü bir dünyadır.",
-  	"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
-  	"latitude": 38.6431,
-  	"longitude": 34.8287
-}</code></pre>
+"place": "Nevşehir, Türkiye",
+"title": "Kapadokya",
+"description": "Kapadokya, adeta peri masallarının gerçeğe dönüştüğü büyülü bir dünyadır.",
+"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+"latitude": 38.6431,
+"longitude": 34.8287
+}
+</code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "Place successfully updated.",
-	"status": "success"
+"message": "Place successfully updated.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="delete-a-place">Delete a place</h2>
@@ -182,8 +188,8 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "Place successfully deleted.",
-	"status": "success"
+"message": "Place successfully deleted.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="get-all-places">Get All Places</h2>
@@ -192,24 +198,24 @@
 			<strong>Pagination:</strong> <code>GET /v1/places?page=1&amp;limit=10</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  "data": {
-    "count": 1,
-    "places": [
-      {
-        "id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "creator": "Furkan Kızmaz",
-        "place": "Nevşehir, Türkiye",
-        "title": "Kapadokya",
-        "description": "Description...",
-        "cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
-        "latitude": 38.6454,
-        "longitude": 34.8283,
-        "created_at": "2023-08-24T08:39:21.978094Z",
-        "updated_at": "2023-08-24T08:42:48.150143Z"
-      }
-    ]
-  },
-  "status": "success"
+"data": {
+"count": 1,
+"places": [
+{
+"id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"creator": "Furkan Kızmaz",
+"place": "Nevşehir, Türkiye",
+"title": "Kapadokya",
+"description": "Description...",
+"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+"latitude": 38.6454,
+"longitude": 34.8283,
+"created_at": "2023-08-24T08:39:21.978094Z",
+"updated_at": "2023-08-24T08:42:48.150143Z"
+}
+]
+},
+"status": "success"
 }
 </code></pre>
 		<h2 id="get-a-place-by-id">Get a Place by ID</h2>
@@ -217,21 +223,21 @@
 			<strong>Endpoint:</strong> <code>GET /v1/places/:placeId</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  "data": {
-    "place": {
-      "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
-      "creator": "Melihozm",
-      "place": "Adıyaman, Türkiye",
-      "title": "Nemrut Dağı Milli Parkı",
-      "description": "Description...",
-      "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
-      "latitude": 37.980927,
-      "longitude": 38.74131,
-      "created_at": "2023-08-24T08:54:08.329671Z",
-      "updated_at": "2023-08-24T08:54:08.329671Z"
-    }
-  },
-  "status": "success"
+"data": {
+"place": {
+"id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+"creator": "Melihozm",
+"place": "Adıyaman, Türkiye",
+"title": "Nemrut Dağı Milli Parkı",
+"description": "Description...",
+"cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+"latitude": 37.980927,
+"longitude": 38.74131,
+"created_at": "2023-08-24T08:54:08.329671Z",
+"updated_at": "2023-08-24T08:54:08.329671Z"
+}
+},
+"status": "success"
 }
 </code></pre>
 		<h2 id="get-all-places-for-user">Get All Places for User</h2>
@@ -240,21 +246,96 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  "data": {
-    "place": {
-      "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
-      "creator": "Melihozm",
-      "place": "Adıyaman, Türkiye",
-      "title": "Nemrut Dağı Milli Parkı",
-      "description": "Description...",
-      "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
-      "latitude": 37.980927,
-      "longitude": 38.74131,
-      "created_at": "2023-08-24T08:54:08.329671Z",
-      "updated_at": "2023-08-24T08:54:08.329671Z"
-    }
-  },
-  "status": "success"
+"data": {
+"count": 1,
+"places": [
+{
+"id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"creator": "Furkan Kızmaz",
+"place": "Nevşehir, Türkiye",
+"title": "Kapadokya",
+"description": "Description...",
+"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+"latitude": 38.6454,
+"longitude": 34.8283,
+"created_at": "2023-08-24T08:39:21.978094Z",
+"updated_at": "2023-08-24T08:42:48.150143Z"
+}
+]
+},
+"status": "success"
+}
+</code></pre>
+		<h2 id="get-popular-places">Get Popular Places</h2>
+		<p>Get popular places with random limit=10,<br>
+			Limit can be at most 20<br>
+			<strong>Endpoint:</strong> <code>GET /v1/places/popular</code><br>
+			<strong>Endpoint:</strong> <code>GET /v1/places/popular?limit=10</code></p>
+		<p><strong>Response</strong></p>
+		<pre><code>{
+"data": {
+"count": 10,
+"places": [
+{
+"id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"creator": "Furkan Kızmaz",
+"place": "Nevşehir, Türkiye",
+"title": "Kapadokya",
+"description": "Description...",
+"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+"latitude": 38.6454,
+"longitude": 34.8283,
+"created_at": "2023-08-24T08:39:21.978094Z",
+"updated_at": "2023-08-24T08:42:48.150143Z"
+},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...}
+]
+},
+"status": "success"
+}
+</code></pre>
+		<h2 id="get-last-places">Get Last Places</h2>
+		<p>Get last created places with 10 limit default<br>
+			Limit can be at most 20<br>
+			<strong>Endpoint:</strong> <code>GET /v1/places/last</code><br>
+			<strong>Endpoint:</strong> <code>GET /v1/places/last?limit=10</code></p>
+		<p><strong>Response</strong></p>
+		<pre><code>{
+"data": {
+"count": 10,
+"places": [
+{
+"id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"creator": "Furkan Kızmaz",
+"place": "Nevşehir, Türkiye",
+"title": "Kapadokya",
+"description": "Description...",
+"cover_image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692817007606598873.png",
+"latitude": 38.6454,
+"longitude": 34.8283,
+"created_at": "2023-08-24T08:39:21.978094Z",
+"updated_at": "2023-08-24T08:42:48.150143Z"
+},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...},
+{...}
+]
+},
+"status": "success"
 }
 </code></pre>
 		<h1 id="gallery">Gallery</h1>
@@ -264,14 +345,14 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-    "place_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
-    "image_url": "https://example.com/animage.png"
+"place_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
+"image_url": "https://example.com/animage.png"
 }
 </code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "Image added to gallery.",
-	"status": "success"
+"message": "Image added to gallery.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="delete-a-gallery-image">Delete a gallery image</h2>
@@ -280,8 +361,8 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "Image deleted from gallery.",
-	"status": "success"
+"message": "Image deleted from gallery.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="get-all-gallery-by-place-id">Get All Gallery by Place ID</h2>
@@ -289,33 +370,33 @@
 			<strong>Endpoint:</strong> <code>GET /v1/galleries/:placeId</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  "data": {
-    "count": 3,
-    "images": [
-      {
-        "id": "287c0591-f0c2-4e67-9061-6d2d3eba7848",
-        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868653636050606.png",
-        "created_at": "2023-08-24T09:18:18.759584Z",
-        "updated_at": "2023-08-24T09:18:18.759584Z"
-      },
-      {
-        "id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
-        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868654206658092.png",
-        "created_at": "2023-08-24T09:18:30.33605Z",
-        "updated_at": "2023-08-24T09:18:30.33605Z"
-      },
-      {
-        "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
-        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868654322256108.png",
-        "created_at": "2023-08-24T09:18:39.709658Z",
-        "updated_at": "2023-08-24T09:18:39.709658Z"
-      }
-    ]
-  },
-  "status": "success"
+"data": {
+"count": 3,
+"images": [
+{
+"id": "287c0591-f0c2-4e67-9061-6d2d3eba7848",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868653636050606.png",
+"created_at": "2023-08-24T09:18:18.759584Z",
+"updated_at": "2023-08-24T09:18:18.759584Z"
+},
+{
+"id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868654206658092.png",
+"created_at": "2023-08-24T09:18:30.33605Z",
+"updated_at": "2023-08-24T09:18:30.33605Z"
+},
+{
+"id": "e36f8c3d-0052-478c-810b-521336e5aa41",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"image_url": "https://iosclass.ams3.digitaloceanspaces.com/1692868654322256108.png",
+"created_at": "2023-08-24T09:18:39.709658Z",
+"updated_at": "2023-08-24T09:18:39.709658Z"
+}
+]
+},
+"status": "success"
 }
 </code></pre>
 		<h1 id="visit">Visit</h1>
@@ -325,14 +406,14 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Request</strong></p>
 		<pre><code>{
-    "place_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
-    "visited_at": "2023-08-10T00:00:00Z"
+"place_id": "358c3c03-a66a-4d03-adc7-84a1d9874d6e",
+"visited_at": "2023-08-10T00:00:00Z"
 }
 </code></pre>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "2983980a-4035-4211-a98d-deb264c6f9f5",
-	"status": "success"
+"message": "Visit successfully created.",
+"status": "success"
 }
 </code></pre>
 		<h2 id="get-all-visits">Get All Visits</h2>
@@ -342,71 +423,70 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  "data": {
-    "count": 3,
-    "visits": [
-      {
-        "id": "287c0591-f0c2-4e67-9061-6d2d3eba7848",
-        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "visited_at": "2023-08-24T09:18:18.759584Z",
-        "created_at": "2023-08-24T09:18:18.759584Z",
-        "updated_at": "2023-08-24T09:18:18.759584Z",
-        "place": {
-          "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
-          "creator": "Melihozm",
-          "place": "Adıyaman, Türkiye",
-          "title": "Nemrut Dağı Milli Parkı",
-          "description": "Description...",
-          "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
-          "latitude": 37.980927,
-          "longitude": 38.74131,
-          "created_at": "2023-08-24T08:54:08.329671Z",
-          "updated_at": "2023-08-24T08:54:08.329671Z"
-        }
-      },
-      {
-        "id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
-        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "visited_at": "2023-08-24T09:18:18.759584Z",
-        "created_at": "2023-08-24T09:18:30.33605Z",
-        "updated_at": "2023-08-24T09:18:30.33605Z",
-        "place": {
-          "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
-          "creator": "Melihozm",
-          "place": "Adıyaman, Türkiye",
-          "title": "Nemrut Dağı Milli Parkı",
-          "description": "Description...",
-          "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
-          "latitude": 37.980927,
-          "longitude": 38.74131,
-          "created_at": "2023-08-24T08:54:08.329671Z",
-          "updated_at": "2023-08-24T08:54:08.329671Z"
-        }
-      },
-      {
-        "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
-        "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-        "visited_at": "2023-08-24T09:18:18.759584Z",
-        "created_at": "2023-08-24T09:18:39.709658Z",
-        "updated_at": "2023-08-24T09:18:39.709658Z",
-        "place": {
-          "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
-          "creator": "Melihozm",
-          "place": "Adıyaman, Türkiye",
-          "title": "Nemrut Dağı Milli Parkı",
-          "description": "Description...",
-          "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
-          "latitude": 37.980927,
-          "longitude": 38.74131,
-          "created_at": "2023-08-24T08:54:08.329671Z",
-          "updated_at": "2023-08-24T08:54:08.329671Z"
-        }
-      }
-    ]
-  },
-  "status": "success"
+"data": {
+"count": 3,
+"visits": [
+{
+"id": "287c0591-f0c2-4e67-9061-6d2d3eba7848",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"visited_at": "2023-08-24T09:18:18.759584Z",
+"created_at": "2023-08-24T09:18:18.759584Z",
+"updated_at": "2023-08-24T09:18:18.759584Z"
+"place": {
+"id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+"creator": "Melihozm",
+"place": "Adıyaman, Türkiye",
+"title": "Nemrut Dağı Milli Parkı",
+"description": "Description...",
+"cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+"latitude": 37.980927,
+"longitude": 38.74131,
+"created_at": "2023-08-24T08:54:08.329671Z",
+"updated_at": "2023-08-24T08:54:08.329671Z"
 }
-
+},
+{
+"id": "2309dbe0-b70d-40ae-ba09-2c565bb17993",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"visited_at": "2023-08-24T09:18:18.759584Z",
+"created_at": "2023-08-24T09:18:30.33605Z",
+"updated_at": "2023-08-24T09:18:30.33605Z"
+"place": {
+"id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+"creator": "Melihozm",
+"place": "Adıyaman, Türkiye",
+"title": "Nemrut Dağı Milli Parkı",
+"description": "Description...",
+"cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+"latitude": 37.980927,
+"longitude": 38.74131,
+"created_at": "2023-08-24T08:54:08.329671Z",
+"updated_at": "2023-08-24T08:54:08.329671Z"
+}
+},
+{
+"id": "e36f8c3d-0052-478c-810b-521336e5aa41",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"visited_at": "2023-08-24T09:18:18.759584Z",
+"created_at": "2023-08-24T09:18:39.709658Z",
+"updated_at": "2023-08-24T09:18:39.709658Z"
+"place": {
+"id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+"creator": "Melihozm",
+"place": "Adıyaman, Türkiye",
+"title": "Nemrut Dağı Milli Parkı",
+"description": "Description...",
+"cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+"latitude": 37.980927,
+"longitude": 38.74131,
+"created_at": "2023-08-24T08:54:08.329671Z",
+"updated_at": "2023-08-24T08:54:08.329671Z"
+}
+}
+]
+},
+"status": "success"
+}
 </code></pre>
 		<h2 id="get-a-visit-by-id">Get A Visit By ID</h2>
 		<p>Get a visit by visit id.<br>
@@ -414,28 +494,28 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-  "data": {
-    "visit": {
-      "id": "e36f8c3d-0052-478c-810b-521336e5aa41",
-      "place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
-      "visited_at": "2023-08-24T09:18:18.759584Z",
-      "created_at": "2023-08-24T09:18:39.709658Z",
-      "updated_at": "2023-08-24T09:18:39.709658Z",
-      "place": {
-        "id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
-        "creator": "Melihozm",
-        "place": "Adıyaman, Türkiye",
-        "title": "Nemrut Dağı Milli Parkı",
-        "description": "Description...",
-        "cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
-        "latitude": 37.980927,
-        "longitude": 38.74131,
-        "created_at": "2023-08-24T08:54:08.329671Z",
-        "updated_at": "2023-08-24T08:54:08.329671Z"
-      }
-    }
-  },
-  "status": "success"
+"data": {
+"visit": {
+"id": "e36f8c3d-0052-478c-810b-521336e5aa41",
+"place_id": "2983980a-4035-4211-a98d-deb264c6f9f5",
+"visited_at": "2023-08-24T09:18:18.759584Z",
+"created_at": "2023-08-24T09:18:39.709658Z",
+"updated_at": "2023-08-24T09:18:39.709658Z"
+"place": {
+"id": "5ee3e518-39e5-47b6-a18a-e942a5598aae",
+"creator": "Melihozm",
+"place": "Adıyaman, Türkiye",
+"title": "Nemrut Dağı Milli Parkı",
+"description": "Description...",
+"cover_image_url": "https://live.staticflickr.com/2941/15102053140_69e59cc770_b.jpg",
+"latitude": 37.980927,
+"longitude": 38.74131,
+"created_at": "2023-08-24T08:54:08.329671Z",
+"updated_at": "2023-08-24T08:54:08.329671Z"
+}
+}
+},
+"status": "success"
 }
 </code></pre>
 		<h2 id="delete-a-visit-by-id">Delete A Visit By ID</h2>
@@ -444,8 +524,26 @@
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
 		<p><strong>Response</strong></p>
 		<pre><code>{
-	"message": "Visit successfully deleted.",
-	"status": "success"
+"message": "Visit successfully deleted.",
+"status": "success"
+}
+</code></pre>
+		<h2 id="check-visit-by-place-id">Check Visit By Place ID</h2>
+		<p>Check visit by place id for user<br>
+			If user have visit with given placeId server returns success<br>
+			Otherwise it’s returns failure.</p>
+		<p><strong>Endpoint:</strong> <code>DELETE /v1/visits/user/:placeId</code><br>
+			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
+		<p><strong>Response</strong></p>
+		<pre><code>{
+"message": "Record not found",
+"status": "fail"
+}
+</code></pre>
+		<p><strong>Response</strong></p>
+		<pre><code>{
+"message": true,
+"status": "success"
 }
 </code></pre>
 
