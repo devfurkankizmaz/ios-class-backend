@@ -51,7 +51,7 @@ func (vr *visitRepository) FetchByID(id string) (models.Visit, error) {
 }
 
 func (vr *visitRepository) DeleteByID(id string) error {
-	result := vr.db.Delete(&models.Visit{}, "id = ?", id)
+	result := vr.db.Delete(&models.Visit{}, "id = ? OR place_id = ?", id, id)
 	if result.RowsAffected == 0 {
 		return result.Error
 	} else if result.Error != nil {
