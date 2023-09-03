@@ -20,8 +20,8 @@ type User struct {
 type UserRepository interface {
 	Create(user *User) error
 	FetchByID(id string) (User, error)
-	ChangePassword(userID string, newPassword string) error
-	EditProfile(userID string, newEmail string, newFullName string, newPP string) error
+	ChangePassword(id string, newPassword string) error
+	EditProfile(id string, updatedProfile *User) error
 	FetchByEmail(email string) (User, error)
 	FetchAll() ([]User, error)
 }

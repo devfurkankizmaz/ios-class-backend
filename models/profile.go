@@ -16,8 +16,12 @@ type EditProfileInput struct {
 	PPUrl    string `json:"pp_url"`
 }
 
+type ChangePasswordInput struct {
+	NewPassword string `json:"new_password"`
+}
+
 type ProfileService interface {
 	FetchProfileByID(id string) (*Profile, error)
-	ChangePassword(userID string, newPassword string) error
-	EditProfile(userID string, newEmail string, newFullName string, newPP string) error
+	ChangePassword(id string, newPassword string) error
+	EditProfile(id string, updatedProfile *User) error
 }

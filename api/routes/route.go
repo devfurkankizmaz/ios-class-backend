@@ -60,6 +60,7 @@ func NewProfileRouter(db *gorm.DB, group *echo.Group) {
 		ProfileService: service.NewProfileService(r),
 	}
 	group.GET("/me", h.Fetch)
+	group.POST("/change-password", h.ChangePassword)
 }
 
 func NewVisitRouter(db *gorm.DB, group *echo.Group) {

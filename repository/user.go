@@ -28,38 +28,36 @@ func (ur *userRepository) Create(user *models.User) error {
 	return nil
 }
 
-func (ur *userRepository) ChangePassword(userID string, newPassword string) error {
-	var user models.User
-	result := ur.db.Where("id = ?", userID).First(&user)
-
-	if result.Error != nil {
-		return result.Error
+func (ur *userRepository) ChangePassword(id string, newPassword string) error {
+	// Find the user by ID
+	user, err := ur.FetchByID(id)
+	if err != nil {
+		return err // Handle the error (user not found, database error, etc.)
 	}
 
+	// Update the user's password with the new one
 	user.Password = newPassword
-	result = ur.db.Save(&user)
 
+	// Save the updated user
+	result := ur.db.Save(&user)
 	if result.Error != nil {
-		return result.Error
+		return result.Error // Handle the database error if any
 	}
 
 	return nil
 }
 
-func (ur *userRepository) EditProfile(userID string, newEmail string, newFullName string, newPP string) error {
-	var user models.User
-	result := ur.db.Where("id = ?", userID).First(&user)
-
-	if result.Error != nil {
-		return result.Error
+func (ur *userRepository) EditProfile(id string, updatedUser *models.User) error {
+	user, err := ur.FetchByID(id)
+	if err != nil {
+		return err
 	}
+	
+	user.Email = updatedUser.Email
+	user.PPUrl = updatedUser.PPUrl
+	user.FullName = updatedUser.FullName
 
-	user.Email = newEmail
-	user.FullName = newFullName
-	user.PPUrl = newPP
-
-	result = ur.db.Save(&user)
-
+	result := ur.db.Save(&user)
 	if result.Error != nil {
 		return result.Error
 	}
