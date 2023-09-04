@@ -93,6 +93,42 @@ Get user profile by auth header
 "updated_at": "2023-08-05T12:34:56Z"  
 }  
 ```  
+## Edit Profile
+Update user profile by auth header  
+**Endpoint:** `PUT v1/edit-profile`  
+**Header** `"Authorization": "Bearer access_token"`
+**Request**
+```  
+{  
+  "full_name": "Furkan Kızgın",
+  "email": "furk@nik.com",
+  "pp_url":"https://example.com/deneme.png"
+} 
+```
+**Response**
+```  
+{
+  "message": "Profile updated successfully",
+  "status": "success"
+}
+```  
+## Change Password
+Change user password by auth header  
+**Endpoint:** `PUT v1/change-password`  
+**Header** `"Authorization": "Bearer access_token"`
+**Request**
+```  
+{  
+  "new_password": "Ultra süper gizli şifrem."
+} 
+```
+**Response**
+```  
+{
+  "message": "Password changed successfully",
+  "status": "success"
+}
+```  
 # Places
 ## Post a place
 Create a place  
