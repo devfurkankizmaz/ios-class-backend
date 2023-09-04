@@ -11,9 +11,9 @@ type Profile struct {
 }
 
 type EditProfileInput struct {
-	FullName string `json:"full_name"`
-	Email    string `json:"email"`
-	PPUrl    string `json:"pp_url"`
+	FullName string `json:"full_name" validate:"min=4,max=30"`
+	Email    string `json:"email" validate:"email"`
+	PPUrl    string `json:"pp_url" validate:"url"`
 }
 
 type ChangePasswordInput struct {

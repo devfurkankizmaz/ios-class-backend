@@ -36,14 +36,11 @@ func (ps *profileService) ChangePassword(id string, newPassword string) error {
 }
 
 func (ps *profileService) EditProfile(id string, updatedProfile *models.User) error {
-	// You can add validation logic here if needed
 
-	// Convert the updated profile data to a user struct
 	updatedUser := &models.User{
 		FullName: updatedProfile.FullName,
 		Email:    updatedProfile.Email,
 		PPUrl:    updatedProfile.PPUrl,
-		Role:     updatedProfile.Role,
 	}
 
 	// Call the UserRepository to edit the profile
