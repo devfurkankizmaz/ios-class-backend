@@ -569,15 +569,15 @@
 			Otherwise it’s returns failure.</p>
 		<p><strong>Endpoint:</strong> <code>DELETE /v1/visits/user/:placeId</code><br>
 			<strong>Header</strong> <code>"Authorization": "Bearer access_token"</code></p>
-		<p><strong>Response</strong></p>
+		<p><strong>Response: Failure</strong></p>
 		<pre><code>{
 "message": "Record not found",
 "status": "fail"
 }
 </code></pre>
-		<p><strong>Response</strong></p>
+		<p><strong>Response: Success</strong></p>
 		<pre><code>{
-"message": true,
+"message": "The Visit with given place id is exists.",
 "status": "success"
 }
 </code></pre>
