@@ -34,10 +34,17 @@ func (ph *ProfileHandler) ChangePassword(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, models.Response{Message: "Invalid request body", Status: "error"})
 	}
 
+	// Validate the request body using the validator package
+	validate := validator.New()
+	if err := validate.Struct(changePasswordRequest); err != nil {
+		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(changePasswordRequest.NewPassword), bcrypt.DefaultCost)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, models.Response{Message: err.Error(), Status: "fail"})
 	}
+
 	err = ph.ProfileService.ChangePassword(newUID, string(hashedPassword))
 
 	if err != nil {
