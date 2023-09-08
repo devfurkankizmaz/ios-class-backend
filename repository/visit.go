@@ -24,7 +24,11 @@ func (vr *visitRepository) Create(visit *models.Visit) error {
 
 func (vr *visitRepository) FetchAllByUserID(id string, limit int, offset int) ([]models.Visit, error) {
 	var visits = []models.Visit{}
-	result := vr.db.Where("user_id = ?", id).Limit(limit).Offset(offset).Find(&visits)
+	result := vr.db.Where("user_id = ?", id).
+		Order("created_at DESC").
+		Limit(limit).
+		Offset(offset).
+		Find(&visits)
 	if result.Error != nil {
 		return visits, result.Error
 	}
