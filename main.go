@@ -40,6 +40,10 @@ func main() {
 		return c.File("about.html")
 	})
 
+	server.GET("/terms", func(c echo.Context) error {
+		return c.File("terms.html")
+	})
+
 	server.POST("/upload", uploadImages)
 
 	routes.Setup(app.DB, server)
