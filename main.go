@@ -2,8 +2,6 @@ package main
 
 import (
 	"fmt"
-	"image"
-	"image/jpeg"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -112,34 +110,6 @@ func uploadImages(c echo.Context) error {
 		}
 		defer file.Close()
 
-		img, _, err := image.Decode(file)
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusBadRequest
-			break
-		}
-
-		var resizedFile *os.File
-		resizedFileName := fmt.Sprintf("resized_%s", uploadedFileName)
-		resizedFile, err = os.Create(resizedFileName)
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusBadRequest
-			break
-		}
-		defer resizedFile.Close()
-
-		jpegOptions := jpeg.Options{
-			Quality: 50, // Kalite seviyesini ayarlayın (0-100 arası değer)
-		}
-
-		err = jpeg.Encode(resizedFile, img, &jpegOptions)
-		if err != nil {
-			errNew = err.Error()
-			httpStatus = http.StatusBadRequest
-			break
-		}
-
 		contentType := "application/octet-stream"
 		switch filepath.Ext(fileHeader.Filename) {
 		case ".jpg", ".jpeg":
@@ -150,9 +120,9 @@ func uploadImages(c echo.Context) error {
 
 		_, err = uploader.PutObject(&s3.PutObjectInput{
 			Bucket:      aws.String(SPACE_NAME),
-			Key:         aws.String(resizedFileName),
+			Key:         aws.String(uploadedFileName),
 			ACL:         aws.String("public-read"),
-			Body:        resizedFile,
+			Body:        file,
 			ContentType: aws.String(contentType),
 		})
 		if err != nil {
