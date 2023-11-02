@@ -19,7 +19,7 @@ import (
 )
 
 const BULK_FILE_SIZE = 32 << 20 // 32 MB
-const BUCKET_NAME = "iosclass"
+const BUCKET_NAME = "travio"
 const serviceAccountKeyFile = "credentials/tribal-primacy-403908-3451abcfb69a.json"
 
 func main() {
