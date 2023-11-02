@@ -33,6 +33,7 @@ func NewDBConnection() *gorm.DB {
 	err = DB.AutoMigrate(&models.Gallery{})
 	err = DB.AutoMigrate(&models.Visit{})
 	err = DB.AutoMigrate(&models.Place{})
+	err = DB.AutoMigrate(&models.Address{})
 
 	DB.Commit()
 

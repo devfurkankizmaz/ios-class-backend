@@ -2,12 +2,13 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+	"strings"
+
 	"github.com/devfurkankizmaz/iosclass-backend/models"
 	"github.com/go-playground/validator"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
-	"net/http"
-	"strings"
 )
 
 type RegisterHandler struct {
@@ -40,7 +41,9 @@ func (rh *RegisterHandler) Register(c echo.Context) error {
 	err = rh.RegisterService.Create(&newUser)
 
 	if err != nil {
+		println("Hata oluştu")
 		return c.JSON(http.StatusInternalServerError, models.Response{Message: err.Error(), Status: "error"})
+
 	}
 	response := fmt.Sprintf("You're registered successfully.")
 	return c.JSON(http.StatusCreated, echo.Map{"status": "success", "message": response})
