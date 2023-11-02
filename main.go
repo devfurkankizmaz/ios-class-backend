@@ -110,7 +110,7 @@ func uploadImages(c echo.Context) error {
 		}
 		defer file.Close()
 
-		contentType := "application/octet-stream"
+		contentType := "multipart/form-data"
 		switch filepath.Ext(fileHeader.Filename) {
 		case ".jpg", ".jpeg":
 			contentType = "image/jpeg"
