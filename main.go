@@ -50,7 +50,13 @@ func main() {
 
 	server.GET("/", HealthCheck)
 
-	server.Logger.Fatal(server.Start("0.0.0.0:3000"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	address := "0.0.0.0:" + port
+
+	server.Logger.Fatal(server.Start(address))
 }
 
 func HealthCheck(c echo.Context) error {
