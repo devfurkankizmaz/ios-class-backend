@@ -2,26 +2,24 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
-	"github.com/aws/aws-sdk-go/aws/session"
-	"github.com/aws/aws-sdk-go/service/s3"
+	"cloud.google.com/go/storage"
 	"github.com/devfurkankizmaz/iosclass-backend/api/routes"
 	"github.com/devfurkankizmaz/iosclass-backend/configs"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"golang.org/x/net/context"
+	"google.golang.org/api/option"
 )
 
 const BULK_FILE_SIZE = 32 << 20 // 32 MB
-const SPACE_NAME = "iosclass"
-const REGION = "ams3"
-const endpoint = "https://ams3.digitaloceanspaces.com"
+const BUCKET_NAME = "iosclass"
 
 func main() {
 	server := echo.New()
@@ -66,8 +64,24 @@ func HealthCheck(c echo.Context) error {
 }
 
 func uploadImages(c echo.Context) error {
-	key := os.Getenv("KEY_SPACE")
-	secret := os.Getenv("SECRET_SPACE")
+	ctx := context.Background()
+	bucketName := BUCKET_NAME
+	apiKey := os.Getenv("GOOGLE_API_KEY")
+
+	if apiKey == "" {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"messageType": "E",
+			"message":     "GOOGLE_API_KEY is not set",
+		})
+	}
+
+	bucket, err := storage.NewClient(ctx, option.WithAPIKey(apiKey))
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"messageType": "E",
+			"message":     err.Error(),
+		})
+	}
 
 	if err := c.Request().ParseMultipartForm(BULK_FILE_SIZE); err != nil {
 		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
@@ -81,19 +95,6 @@ func uploadImages(c echo.Context) error {
 	var errNew string
 	var httpStatus int
 	var uploadedURLs []string
-
-	sess, err := session.NewSession(&aws.Config{
-		Credentials: credentials.NewStaticCredentials(key, secret, ""),
-		Endpoint:    aws.String(endpoint),
-		Region:      aws.String(REGION),
-	})
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"messageType": "E",
-			"message":     err.Error(),
-		})
-	}
-	uploader := s3.New(sess)
 
 	uploadedURLs = make([]string, 0)
 	allowedExtensions := []string{".jpg", ".jpeg", ".png"}
@@ -124,20 +125,22 @@ func uploadImages(c echo.Context) error {
 			contentType = "image/png"
 		}
 
-		_, err = uploader.PutObject(&s3.PutObjectInput{
-			Bucket:      aws.String(SPACE_NAME),
-			Key:         aws.String(uploadedFileName),
-			ACL:         aws.String("public-read"),
-			Body:        file,
-			ContentType: aws.String(contentType),
-		})
-		if err != nil {
+		wc := bucket.Bucket(bucketName).Object(uploadedFileName).NewWriter(ctx)
+		wc.ContentType = contentType
+
+		if _, err := io.Copy(wc, file); err != nil {
 			errNew = err.Error()
 			httpStatus = http.StatusBadRequest
 			break
 		}
 
-		uploadedURL := fmt.Sprintf("https://%s.%s.digitaloceanspaces.com/%s", SPACE_NAME, REGION, uploadedFileName)
+		if err := wc.Close(); err != nil {
+			errNew = err.Error()
+			httpStatus = http.StatusBadRequest
+			break
+		}
+
+		uploadedURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", bucketName, uploadedFileName)
 		uploadedURLs = append(uploadedURLs, uploadedURL)
 	}
 
