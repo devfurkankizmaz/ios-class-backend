@@ -67,14 +67,6 @@ func HealthCheck(c echo.Context) error {
 func uploadImages(c echo.Context) error {
 	ctx := context.Background()
 	bucketName := BUCKET_NAME
-	apiKey := os.Getenv("GOOGLE_API_KEY")
-
-	if apiKey == "" {
-		return c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"messageType": "E",
-			"message":     "GOOGLE_API_KEY is not set",
-		})
-	}
 
 	bucket, err := storage.NewClient(ctx, option.WithCredentialsFile(serviceAccountKeyFile))
 	if err != nil {
